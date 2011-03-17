@@ -3,3 +3,4 @@
 .bundle
 .hg
 .hgignore
+*.db
