@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'sinatra'
+require 'dm-core'
+require 'dm-migrations'
 
 configure :production do
   # Configure stuff here you'll want to

@@ -1,6 +1,13 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    addressable (2.2.2)
+    dm-core (1.0.2)
+      addressable (~> 2.2)
+      extlib (~> 0.9.15)
+    dm-migrations (1.0.2)
+      dm-core (~> 1.0.2)
+    extlib (0.9.15)
     rack (1.2.2)
     sinatra (1.0)
       rack (>= 1.0)
@@ -9,4 +16,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  dm-core
+  dm-migrations
   sinatra (= 1.0)
