@@ -4,3 +4,4 @@
 .hg
 .hgignore
 *.db
+heroku.log
