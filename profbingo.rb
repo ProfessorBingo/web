@@ -7,9 +7,11 @@ require 'dm-sqlite-adapter'
 require 'haml'
 require 'pp'
 
+require 'init'
 
 
 configure :production do
+  enable :sessions
   # Configure stuff here you'll want to
   # only be run at Heroku at boot
 
@@ -18,10 +20,10 @@ configure :production do
 end
 
 configure :development do
-  DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite3://' + Dir.pwd + '/profbingo.db') 
+  enable :sessions
 end
 
-require 'models'
+
 
 DataMapper.finalize
 DataMapper.auto_upgrade!
@@ -30,4 +32,8 @@ DataMapper.auto_upgrade!
 get '/' do
   "Woot!
   ProfBingo is running on Heroku!"
+end
+
+get '/env' do
+  ENV.inspect
 end
