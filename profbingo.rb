@@ -7,11 +7,12 @@ require 'dm-sqlite-adapter'
 require 'haml'
 require 'pp'
 
-require 'init'
+
 
 
 configure :production do
   enable :sessions
+  require 'init'
   # Configure stuff here you'll want to
   # only be run at Heroku at boot
 
@@ -21,12 +22,9 @@ end
 
 configure :development do
   enable :sessions
+  require 'init'
 end
 
-
-
-DataMapper.finalize
-DataMapper.auto_upgrade!
 
 # Quick test
 get '/' do
