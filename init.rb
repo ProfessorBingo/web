@@ -22,3 +22,5 @@ require 'models'
 # Make sure DB is up to date.
 DataMapper.finalize
 DataMapper.auto_upgrade!
+
+require 'routes'

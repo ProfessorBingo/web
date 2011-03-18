@@ -10,12 +10,3 @@ end
 
 pp "Application Starting..."
 
-# Quick test
-get '/' do
-  "Woot!
-  ProfBingo is running on Heroku!"
-end
-
-get '/env' do
-  ENV.inspect
-end
