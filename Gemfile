@@ -4,3 +4,4 @@ gem 'dm-core'
 gem 'dm-migrations'
 gem 'dm-sqlite-adapter'
 gem 'haml'
+gem 'dm-postgres-adapter', :group => :production
