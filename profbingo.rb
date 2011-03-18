@@ -1,30 +1,14 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'sinatra'
-require 'dm-core'
-require 'dm-migrations'
-require 'dm-sqlite-adapter'
-require 'haml'
 require 'pp'
+require 'init'
 
-
-
-
-configure :production do
-  enable :sessions
-  require 'init'
-  # Configure stuff here you'll want to
-  # only be run at Heroku at boot
-
-  # TIP:  You can get you database information
-  #       from ENV['DATABASE_URI'] (see /env route below)
+configure do
+  Student.first_or_create(:name_first => 'Eric', :name_last => 'Stokes', :email => 'stokesej@rose-hulman.edu', :pwhash => Digest::SHA1.hexdigest('password'))
 end
 
-configure :development do
-  enable :sessions
-  require 'init'
-end
-
+pp "Application Starting..."
 
 # Quick test
 get '/' do
