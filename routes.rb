@@ -11,6 +11,9 @@ end
 # DANGER WILL ROBINSON!!!!
 
 # User(Student) Routes
+post '/student' do
+
+end
 
 # Professor Routes
 

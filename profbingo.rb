@@ -10,3 +10,7 @@ end
 
 pp "Application Starting..."
 
+before do
+  pp "A route was called"
+end
+

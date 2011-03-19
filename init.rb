@@ -3,6 +3,7 @@ require 'dm-migrations'
 require 'dm-sqlite-adapter'
 require 'digest/sha1'
 require 'haml'
+require 'json'
 
 configure :production do
   enable :sessions
