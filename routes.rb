@@ -15,6 +15,10 @@ post '/student' do
 
 end
 
+get '/students' do
+  haml :students
+end
+
 # Professor Routes
 
 # Board Routes

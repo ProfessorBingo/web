@@ -24,8 +24,10 @@ GEM
     haml (3.0.25)
     json (1.5.1)
     rack (1.2.2)
-    sinatra (1.0)
-      rack (>= 1.0)
+    sinatra (1.2.1)
+      rack (~> 1.1)
+      tilt (< 2.0, >= 1.2.2)
+    tilt (1.2.2)
 
 PLATFORMS
   ruby
@@ -37,4 +39,4 @@ DEPENDENCIES
   dm-sqlite-adapter
   haml
   json
-  sinatra (= 1.0)
+  sinatra
