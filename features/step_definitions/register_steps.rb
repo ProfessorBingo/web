@@ -1,6 +1,6 @@
 Given /^I see '(.*)'$/ do |text|
   #pending # express the regexp above with the code you wish you had
-  body.hascontent?(text)
+  page.should have_content(text)
 end
 
 When /^I click '(.*)'$/ do |link|
@@ -9,6 +9,6 @@ When /^I click '(.*)'$/ do |link|
 end
 
 Then /^I should see '(.*)'$/ do |text|
-  #body.should match
-  pending
+  page.should have_content(text)
 end
+
