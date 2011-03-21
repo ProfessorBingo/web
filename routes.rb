@@ -31,7 +31,21 @@ module Routes
         @message = "Registration Successful!"
         haml :index
       end
-      
+    end
+    
+    app.get '/login/?' do
+      haml :login
+    end
+    
+    app.post '/login/?' do
+      session[:user] = Student.auth(params[:email], params[:password])
+      pp session[:user]
+      if(session[:user])
+        redirect '/'
+      else
+        @message = "Invalid username or password"
+        haml :login
+      end
     end
     
   end

@@ -27,8 +27,6 @@ class Student
     u = Student.first(:email => login)
     return nil if u.nil?
     return u if Student.encrypt(pass, self.email.to_s) == u.pwhash
-    puts Student.encrypt(pass, self.email.to_s)
-    nil
   end
 end
 

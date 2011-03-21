@@ -2,6 +2,7 @@ Feature: Registration
   In order to play bingo
   I need to be able to choose a professor
   And In order to choose a professor, I must be identified as a member of that school
+  And In order to be identified as a member of a school, I need to register as an authenticated user.
   
   Scenario: Get to registration page
     Given I am on the home page
