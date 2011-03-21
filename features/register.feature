@@ -5,5 +5,6 @@ Feature: Registration
   
   Scenario: Get to registration page
     Given I am on the home page
+    And I see 'Professor Bingo!'
     When I click 'Register'
     Then I should see 'Register for Professor Bingo'
