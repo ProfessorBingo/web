@@ -2,7 +2,7 @@ source :rubygems
 gem 'sinatra'
 gem 'dm-core'
 gem 'dm-migrations'
-gem 'dm-sqlite-adapter', :group => :development
+gem 'dm-sqlite-adapter'
 gem 'haml'
 gem 'json', '~>1.4.6'
 gem 'cucumber', :group => :test
