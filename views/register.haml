@@ -12,16 +12,16 @@
       %fieldset
         %ol
           %li
-            %label{:for => "last_name"} First Name:
-            %input{:type => "text", :name => "last_name"}
-          %li
             %label{:for => "first_name"} First Name:
-            %input{:type => "text", :name => "first_name"}
+            %input{:type => "text", :name => "first_name", :value => @first_name}
+          %li
+            %label{:for => "last_name"} Last Name:
+            %input{:type => "text", :name => "last_name", :value => @last_name}
           %li
             %label{:for => "password"} Password:
-            %input{:type => "password", :name => "password"}
+            %input{:type => "password", :name => "password", :value => @password}
           %li
             %label{:for => "email"} School Email Address:
-            %input{:type => "text", :name => "email", :value => @last_name}
+            %input{:type => "text", :name => "email", :value => @email}
           %li
             %input{:type => "submit", :value => "Register"}

@@ -13,22 +13,36 @@ class ProfBingo < Sinatra::Base
     enable :sessions
     pp "Loading Production Environment..."
     DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite3://' + Dir.pwd + '/profbingo.db') 
+    DataMapper.finalize
+    DataMapper.auto_upgrade!
   end
 
   configure :test do
     enable :sessions
     pp "Loading Test Environment..."
     DataMapper.setup(:default, 'sqlite3://' + Dir.pwd + '/profbingo_test.db') 
+    DataMapper.finalize
+    DataMapper.auto_upgrade!
+    Student.all.destroy
   end
 
   configure :development do
     enable :sessions
     pp "Loading Development Environment..."
     DataMapper.setup(:default, 'sqlite3://' + Dir.pwd + '/profbingo.db') 
+    DataMapper.finalize
+    DataMapper.auto_upgrade!
   end
   # Include the models after the database has been initialized
+
   configure do
-    Student.first_or_create(:name_first => 'Eric', :name_last => 'Stokes', :email => 'stokesej@rose-hulman.edu', :pwhash => Digest::SHA1.hexdigest('password'))
+    
+    s = Student.first_or_new
+    s.email = 'stokes@college.edu'
+    s.last_name = 'Stokes'
+    s.first_name = 'Eric'
+    s.password = 'password'
+    s.save
     enable :static, :session
     set :root, File.dirname(__FILE__)
 
@@ -36,8 +50,7 @@ class ProfBingo < Sinatra::Base
   end
 
   # Make sure DB is up to date.
-  DataMapper.finalize
-  DataMapper.auto_upgrade!
+  
 
   # Include our routes in a seperate file for cleanliness 
   include Routes

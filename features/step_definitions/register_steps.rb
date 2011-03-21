@@ -24,6 +24,6 @@ Then /^'(.*)' should contain '(.*)'$/ do |field, value|
   find_field(field).value.should == value
 end
 
-Then /^the user '(.*)' should exist$/ do |name|
-  Student.first(:username => name)
+Then /^the user '(.*)' should exist$/ do |email|
+  Student.first(:email => email)
 end

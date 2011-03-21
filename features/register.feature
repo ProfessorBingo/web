@@ -29,4 +29,15 @@ Feature: Registration
     And I fill in 'student@college.edu' for 'email'
     When I click the 'Register' button
     Then I should see 'Registration Successful'
-    Then the user 'fernferret' should exist
+    Then the user 'student@college.edu' should exist
+    
+  Scenario: Email is already taken
+    Given I am on the 'register' page
+    And I see 'Register for Professor Bingo'
+    And I fill in 'Eric' for 'first_name'
+    And I fill in 'Stokes' for 'last_name'
+    And I fill in 'password' for 'password'
+    And I fill in 'student@college.edu' for 'email'
+    When I click the 'Register' button
+    Then I should see 'Registration Failed'
+    And I should see 'That email address has already been used'
