@@ -4,4 +4,7 @@
       ="Professor Bingo!"
   .login_info
     %a{:title => "Register", :id => "Register", :href => "register/"} Register
+  - if @message
+    .message
+      =@message
   

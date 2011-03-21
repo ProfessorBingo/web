@@ -1,0 +1,27 @@
+!!! 5
+%html{:lang => "en"}
+  %head
+    %meta{:content => "text/html; charset=ISO-8859-1", "http-equiv" => "Content-Type"}
+    %title Professor Bingo - Register
+    %link{:href => "css/style.css", :media => "screen", :rel => "stylesheet"}
+  %body
+    =haml :header
+    %h2
+      ="Register for Professor Bingo"
+    %form{:action => "", :method => "post"}
+      %fieldset
+        %ol
+          %li
+            %label{:for => "last_name"} First Name:
+            %input{:type => "text", :name => "last_name"}
+          %li
+            %label{:for => "first_name"} First Name:
+            %input{:type => "text", :name => "first_name"}
+          %li
+            %label{:for => "password"} Password:
+            %input{:type => "password", :name => "password"}
+          %li
+            %label{:for => "email"} School Email Address:
+            %input{:type => "text", :name => "email", :value => @last_name}
+          %li
+            %input{:type => "submit", :value => "Register"}

@@ -8,6 +8,7 @@ require 'routes'
 require 'haml'
 
 class ProfBingo < Sinatra::Base
+  
   configure :production do
     enable :sessions
     pp "Loading Production Environment..."
@@ -38,14 +39,12 @@ class ProfBingo < Sinatra::Base
   DataMapper.finalize
   DataMapper.auto_upgrade!
 
-  #require 'routes'
-  get '/' do
-    haml :index
-  end
+  # Include our routes in a seperate file for cleanliness 
+  include Routes
 
   pp "Application Starting..."
 
   before do
-    pp "A route was called"
+    # pp "A route was called"
   end
 end

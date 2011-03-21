@@ -8,3 +8,25 @@ Feature: Registration
     And I see 'Professor Bingo!'
     When I click 'Register'
     Then I should see 'Register for Professor Bingo'
+    
+  Scenario: Enter Information incorrectly on registration page
+    Given I am on the 'register' page
+    And I see 'Register for Professor Bingo'
+    And I fill in 'student@college.edu' for 'email'
+    And I fill in 'password' for 'password'
+    And I fill in 'Eric' for 'first_name'
+    When I click the 'Register' button
+    Then I should see 'Registration Failed'
+    Then 'email' should contain 'student@college.edu'
+    Then 'password' should contain 'password'
+    
+  Scenario: Enter Information correctly on registration page
+    Given I am on the 'register' page
+    And I see 'Register for Professor Bingo'
+    And I fill in 'Eric' for 'first_name'
+    And I fill in 'Stokes' for 'last_name'
+    And I fill in 'password' for 'password'
+    And I fill in 'student@college.edu' for 'email'
+    When I click the 'Register' button
+    Then I should see 'Registration Successful'
+    Then the user 'fernferret' should exist
