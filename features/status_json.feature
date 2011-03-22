@@ -8,3 +8,10 @@ Feature: Allow Devices to determine if their authcode is valid
     And I log in as 'user' via JSON
     When I ask for status as 'user' via JSON
     Then the JSON 'result' I receive should be 'Success'
+
+  Scenario: Status Query Failure
+    Given A user 'user' exists
+    And I log in as 'user' via JSON
+    And I log out as 'user' via JSON
+    When I ask for status as 'user' via JSON
+    Then the JSON 'result' I receive should be 'FAIL'

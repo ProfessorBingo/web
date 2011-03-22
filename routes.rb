@@ -76,10 +76,10 @@ module Routes
     
     app.post '/logout/?' do
       if(params[:data])
-        pwhash = JSON.parse(params[:data])
-        s = Student.first(:mobileauth => pwhash['authcode'])
-        if(s && pwhash['authcode'] != "INVALID")
-          s.update(:mobileauth => "INVALID")
+        itemhash = JSON.parse(params[:data])
+        s = Student.first(:mobileauth => itemhash['authcode'])
+        if(s && itemhash['authcode'] != "")
+          s.update(:mobileauth => "")
           content_type :json
           { :data => {:result => 'Success'}}.to_json
         else
@@ -87,6 +87,20 @@ module Routes
           { :data => {:result => 'FAIL'}}.to_json
         end
         
+      end
+    end
+    # Look into ways of refactoring this and logout, only 1 line difference
+    app.post '/status/?' do
+      if(params[:data])
+        itemhash = JSON.parse(params[:data])
+        s = Student.first(:mobileauth => itemhash['authcode'])
+        if(s && itemhash['authcode'] != "")
+          content_type :json
+          { :data => {:result => 'Success'}}.to_json
+        else
+          content_type :json
+          { :data => {:result => 'FAIL'}}.to_json
+        end
       end
     end
     
