@@ -12,7 +12,8 @@ The general idea of the Professor Bingo project is as follows: an application co
 The following sections detail the valid POST variables for device login.
 
 ##Login##
-The JSON object should be __POST__ed to 'data' as follows:
+###URL: /login###
+The JSON object should be posted in 'data' as follows:
 
     data => {"email":"student@school.edu", "password":"passw0rd"}
 
@@ -30,7 +31,8 @@ __Note:__ _authcode_ value will be returned if the result is a failure
 
 
 ##Logout##
-The JSON object should be posted to 'data' as follows:
+###URL: /logout###
+The JSON object should be posted in 'data' as follows:
 
     data => {"authcode":"8bdf9067f19ae9f2614c62676792b1ecf70f47dd"}
 
@@ -48,8 +50,8 @@ __Note:__ This condition will occur if an _authcode_ has already been logged out
     
 ##Status##
 **NOT LIVE YET**
-
-The JSON object should be posted to 'data' as follows:
+###URL: /status###
+The JSON object should be posted in 'data' as follows:
 
     data => {"authcode":"8bdf9067f19ae9f2614c62676792b1ecf70f47dd"}
 
