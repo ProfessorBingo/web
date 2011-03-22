@@ -5,6 +5,7 @@ require 'dm-core'
 require 'dm-migrations'
 require 'models'
 require 'routes'
+require 'helpers'
 require 'haml'
 require 'json'
 
@@ -55,6 +56,8 @@ class ProfBingo < Sinatra::Base
 
   # Include our routes in a seperate file for cleanliness 
   include Routes
+  
+  include Helpers
 
   pp "Application Starting..."
 

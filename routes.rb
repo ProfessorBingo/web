@@ -11,9 +11,9 @@ module Routes
     
     app.post '/register/?' do
       if (params[:first_name] == "" || params[:last_name] == "" || params[:password] == "" || params[:email] == "") || Student.first(:email => params[:email])
-        @message = "Registration Failed"
+        session[:message] = "Registration Failed"
         if Student.first(:email => params[:email])
-          @message += "That email address has already been used"
+          session[:message] += " - That email address has already been used"
         end
         @email = params[:email]
         @last_name = params[:last_name]
@@ -28,7 +28,7 @@ module Routes
         s.password = params[:password]
         s.save
         session[:user] = Student.auth(params[:email], params[:password])
-        @message = "Registration Successful!"
+        session[:message] = "Registration Successful!"
         haml :index
       end
     end
@@ -59,7 +59,7 @@ module Routes
           { :data => {:authcode => 'FAIL'}}.to_json
         end
       else
-        @message = "Invalid username or password"
+        session[:message] = "Invalid username or password"
         haml :login
       end
     end

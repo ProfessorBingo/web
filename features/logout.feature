@@ -11,10 +11,3 @@ Feature: Logout
     Then I should see 'Login'
     And I should see 'Register'
     And I should not see 'Logout'
-    
-  Scenario: Successful User Logout via JSON
-
-    Given A user 'student@school.edu' with password 'password' exists
-    And I log in using 'student@school.edu' with password 'password' on a mobile device
-    When I log out using a mobile device
-    Then the JSON authcode I receive should be 'Success'

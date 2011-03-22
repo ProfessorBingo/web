@@ -8,6 +8,7 @@ require 'capybara'
 require 'capybara/cucumber'
 require 'rspec'
 require 'rest-client'
+require 'rack/test'
 
 Capybara.app = ProfBingo
 

@@ -10,7 +10,8 @@
       %a{:title => "Register", :id => "Register", :href => "/register/"} Register
       %br
       %a{:title => "Login", :id => "Login", :href => "/login/"} Login
-  - if @message
+  - if session[:message]
     .message
-      =@message
+      =session[:message]
+      -session[:message] = nil
   
