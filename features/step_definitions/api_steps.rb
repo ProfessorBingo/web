@@ -1,18 +1,6 @@
-World(Rack::Test::Methods)
-
 Given /^I am a valid API user$/ do
   @user = Factory(:user)
   authorize(@user.email, @user.password)
-end
-
-Given /^I log in using '(.*)' with password '(.*)' on a mobile device$/ do |login, pass|
-  # This next line should be done on the Android side, passing the password as a hash
-  pwhash = Digest::SHA1.hexdigest(pass + login)
-  @result = RestClient.post "http://localhost:3000/login", :data => { 'email' => login, 'password' => pwhash }.to_json
-  # This one is also a bit fudged, we have to pull the student from OUR test db, not the db that the result is going to 
-  s = Student.first(:email => 'email')
-  hash = JSON.parse(@result)
-  s.update(:mobileauth => hash['data']['authcode'])
 end
 
 When /^I send a POST request to "([^\"]*)" with the following:$/ do |path, body|
@@ -25,16 +13,36 @@ When /^I log out using a mobile device$/ do
 end
 
 Then /^the JSON authcode I receive should be '(.*)'$/ do |authcode|
-  # This step is a bit fudged, as it's difficult to reproduce the time sensative auth codes
-  hash = JSON.parse(@result)
-  if(authcode == 'FAIL' || authcode == 'Success')
-    hash['data']['authcode'].should == authcode
-  else
-    hash['data']['authcode'].should_not == 'FAIL'
-  end
+  jsonresult = JSON.parse(page.body)
+  jsonresult['data']['authcode'].should == authcode
 end
-Then /^the authcode should be associated with '(.*)'$/ do |email|
-  s = Student.first(:email => email)
-  hash = JSON.parse(@result)
+
+Then /^the JSON authcode I receive should not be '(.*)'$/ do |authcode|
+  jsonresult = JSON.parse(page.body)
+  jsonresult['data']['authcode'].should_not == authcode
+  jsonresult['data']['authcode'].should_not == ''
+  jsonresult['data']['authcode'].should_not == nil
+end
+Then /^the authcode should be associated with '(.*)'$/ do |user|
+  attrs = Factory.attributes_for(user.to_sym)
+  s = Student.first(:email => attrs[:email])
+  hash = JSON.parse(page.body)
   s.mobileauth.should == hash['data']['authcode']
+end
+
+# Must run this one as rack_test!!!
+Given /^I log in as '(.*)' via JSON$/ do |user|
+  Capybara.current_driver = :rack_test
+  u = Factory.build(user.to_sym)
+  json_login = {'email' => u.email, 'password' => u.pwhash}.to_json
+  rack_test_session_wrapper = Capybara.current_session.driver
+  rack_test_session_wrapper.process :post, '/login' ,:data => json_login
+end
+
+Given /^I log in as '(.*)' via JSON incorrectly$/ do |user|
+  Capybara.current_driver = :rack_test
+  u = Factory.build(user.to_sym)
+  json_login = {'email' => u.email, 'password' => ''}.to_json
+  rack_test_session_wrapper = Capybara.current_session.driver
+  rack_test_session_wrapper.process :post, '/login' ,:data => json_login
 end
