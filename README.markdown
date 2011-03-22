@@ -49,7 +49,6 @@ __Note:__ This condition will occur if an _authcode_ has already been logged out
     {"result":"FAIL"}
     
 ##Status##
-**NOT LIVE YET**
 ###URL: /status###
 The JSON object should be posted in 'data' as follows:
 
