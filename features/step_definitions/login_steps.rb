@@ -13,8 +13,19 @@ Given /^I log in using '(.*)' with password '(.*)' on a mobile device$/ do |logi
   @result = RestClient.post "http://localhost:3000/login", :data => { 'email' => login, 'password' => pwhash }.to_json
 end
 
-Then /^the JSON authcode I recieve should be '\{"([^"]*)":\{"([^"]*)":"([^"]*)"\}\}'$/ do |data, authcode_key, authcode_value|
+Given /^I am logged in as '(.*)' with password '(.*)'$/ do |email, pass|
+    visit("/login")
+    fill_in("email", :with => email)
+    fill_in("password", :with => pass)
+    click_button("Login")
+end
+
+Then /^the JSON authcode I recieve should be '(.*)'$/ do |authcode|
   # This step is a bit fudged, as it's difficult to reproduce the time sensative auth codes
   hash = JSON.parse(@result)
-  hash['data']['authcode'].should_not == 'FAIL'
+  if(authcode != 'FAIL')
+    hash['data']['authcode'].should_not == 'FAIL'
+  else
+    hash['data']['authcode'].should == 'FAIL'
+  end
 end
