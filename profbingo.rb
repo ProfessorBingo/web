@@ -6,6 +6,8 @@ require 'dm-migrations'
 require 'models'
 require 'routes'
 require 'haml'
+require 'json'
+require 'rest-client'
 
 class ProfBingo < Sinatra::Base
   

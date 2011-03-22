@@ -13,20 +13,32 @@ class Student
   property :last_name,  String, :required => true
   property :email,      String, :required => true
   property :pwhash,     String, :required => true
+  property :mobilehash, String
   
   def password=(pass)
-    @password = pass
-    self.pwhash = Student.encrypt(@password, self.email.to_s)
-  end  
+    self.pwhash = Student.encrypt(pass, self.email.to_s)
+  end
+  # def emailaddress=(email)
+  #   puts "callingemail"
+  #   @emailforencrypt = email
+  #   self.email = email
+  # end
 
   def self.encrypt(pass, salt)
-    Digest::SHA1.hexdigest(pass + self.email.to_s)
+    totalpword = pass + salt
+    Digest::SHA1.hexdigest(totalpword)
   end
 
   def self.auth(login, pass)
     u = Student.first(:email => login)
     return nil if u.nil?
-    return u if Student.encrypt(pass, self.email.to_s) == u.pwhash
+    return u if Student.encrypt(pass, login) == u.pwhash
+  end
+  # a more secure auth method where the client has pre hashed the password, Ideally we'd like to do this all the time
+  def self.sauth(login, passhash)
+    u = Student.first(:email => login, :pwhash => passhash)
+    return nil if u.nil?
+    return u
   end
 end
 

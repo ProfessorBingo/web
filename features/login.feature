@@ -41,3 +41,9 @@ Feature: Login
     And I fill in 'wrong' for 'password'
     When I click the 'Login' button
     Then I should see 'Invalid username or password'
+    
+  Scenario: Login from a mobile device correctly
+    Given A user 'student@school.edu' with password 'password' exists
+    And I log in using 'student@school.edu' with password 'password' on a mobile device
+    Then the JSON authcode I recieve should be '{"data":{"authcode":"TimeBasedAuthCode"}}'
+    

@@ -39,13 +39,34 @@ module Routes
     
     app.post '/login/?' do
       session[:user] = Student.auth(params[:email], params[:password])
-      pp session[:user]
+
+      # Check for basic auth
       if(session[:user])
         redirect '/'
+      elsif(params[:data]) # Check for a json login
+        jdata = params[:data]
+        credentials = JSON.parse(jdata)
+        if(Student.sauth(credentials["email"], credentials["password"]))
+          authgenstring = credentials["password"] + credentials["email"] + Time.now.to_s
+          s = Student.first(credentials["email"])
+          authcode = Digest::SHA1.hexdigest(authgenstring)
+          s.mobilehash = authcode
+          content_type :json
+          puts authgenstring
+          { :data => {:authcode => authcode}}.to_json
+        else
+          content_type :json
+          { :data => {:authcode => 'FAIL'}}.to_json
+        end
       else
         @message = "Invalid username or password"
         haml :login
       end
+    end
+    
+    app.get '/json/?' do
+      #content_type :json
+      #{ :username => 'test', :pwhash => 'test' }.to_json
     end
     
   end

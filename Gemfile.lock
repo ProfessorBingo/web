@@ -57,6 +57,8 @@ GEM
     rack-test (0.5.7)
       rack (>= 1.0)
     rake (0.8.7)
+    rest-client (1.6.1)
+      mime-types (>= 1.16)
     rspec (2.5.0)
       rspec-core (~> 2.5.0)
       rspec-expectations (~> 2.5.0)
@@ -95,6 +97,7 @@ DEPENDENCIES
   dm-sqlite-adapter
   haml
   json (~> 1.4.6)
+  rest-client
   rspec
   sinatra
   thin
