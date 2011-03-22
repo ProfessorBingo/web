@@ -38,6 +38,8 @@ module Routes
     end
     
     app.post '/login/?' do
+      pp "Found Login POST"
+      pp params
       session[:user] = Student.auth(params[:email], params[:password])
 
       # Check for basic auth
@@ -52,7 +54,6 @@ module Routes
           authcode = Digest::SHA1.hexdigest(authgenstring)
           s.update(:mobileauth => authcode)
           content_type :json
-          puts authgenstring
           { :data => {:authcode => authcode}}.to_json
         else
           content_type :json
@@ -72,10 +73,7 @@ module Routes
     app.post '/logout/?' do
       if(params[:data])
         pwhash = JSON.parse(params[:data])
-        pp Student.all
         s = Student.first(:mobileauth => pwhash['authcode'])
-        pp s
-        pp pwhash['authcode']
         if(s)
           s.update(:mobileauth => "INVALID")
           content_type :json
