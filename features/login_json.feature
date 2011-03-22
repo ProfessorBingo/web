@@ -7,10 +7,10 @@ Feature: Mobile Login
   Scenario: Login from a mobile device correctly
     Given A user 'user' exists
     And I log in as 'user' via JSON
-    Then the JSON authcode I receive should not be 'FAIL'
-    And the authcode should be associated with 'user'
+    Then the JSON 'result' I receive should be 'Success'
+    And the 'authcode' should be associated with 'user'
 
   Scenario: Login from a mobile device incorrectly
     Given A user 'user' exists
     And I log in as 'user' via JSON incorrectly
-    Then the JSON authcode I receive should be 'FAIL'
+    Then the JSON 'result' I receive should be 'FAIL'

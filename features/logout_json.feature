@@ -8,4 +8,11 @@ Feature: Mobile Logout
     Given A user 'user' exists
     And I log in as 'user' via JSON
     When I log out as 'user' via JSON
-    Then the JSON authcode I receive should be 'Success'
+    Then the JSON 'result' I receive should be 'Success'
+    
+  Scenario: A user that is already logged out tries to log out again
+    Given A user 'user' exists
+    And I log in as 'user' via JSON
+    When I log out as 'user' via JSON
+    And I log out as 'user' via JSON
+    Then the JSON 'result' I receive should be 'FAIL'

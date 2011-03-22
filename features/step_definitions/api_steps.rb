@@ -27,25 +27,34 @@ When /^I log out as '(.*)' via JSON$/ do |user|
   s = Student.first(:email => attrs[:email])
   json_logout = {'authcode' => s.mobileauth}.to_json
   rack_test_session_wrapper = Capybara.current_session.driver
-  rack_test_session_wrapper.process :post, '/login' ,:data => json_logout
+  rack_test_session_wrapper.process :post, '/logout' ,:data => json_logout
 end
 
-Then /^the JSON authcode I receive should be '(.*)'$/ do |authcode|
-  jsonresult = JSON.parse(page.body)
-  jsonresult['data']['authcode'].should == authcode
+# Must run this one as rack_test!!!
+When /^I ask for status as '(.*)' via JSON$/ do |user|
+  Capybara.current_driver = :rack_test
+  attrs = Factory.attributes_for(user.to_sym)
+  s = Student.first(:email => attrs[:email])
+  json_logout = {'authcode' => s.mobileauth, 'action' => 'status'}.to_json
+  rack_test_session_wrapper = Capybara.current_session.driver
+  rack_test_session_wrapper.process :post, '/status' ,:data => json_logout
 end
 
-Then /^the JSON authcode I receive should not be '(.*)'$/ do |authcode|
+Then /^the JSON '(.*)' I receive should be '(.*)'$/ do |key, value|
   jsonresult = JSON.parse(page.body)
-  jsonresult['data']['authcode'].should_not == authcode
-  jsonresult['data']['authcode'].should_not == ''
-  jsonresult['data']['authcode'].should_not == nil
+  jsonresult['data'][key].should == value
 end
-Then /^the authcode should be associated with '(.*)'$/ do |user|
+
+Then /^the JSON '(.*)' I receive should not be '(.*)'$/ do |key, value|
+  jsonresult = JSON.parse(page.body)
+  jsonresult['data'][key].should_not == value
+  jsonresult['data'][key].should_not == ''
+  jsonresult['data'][key].should_not == nil
+end
+
+Then /^the '(.*)' should be associated with '(.*)'$/ do |key, user|
   attrs = Factory.attributes_for(user.to_sym)
   s = Student.first(:email => attrs[:email])
   hash = JSON.parse(page.body)
-  s.mobileauth.should == hash['data']['authcode']
+  s.mobileauth.should == hash['data'][key]
 end
-
-

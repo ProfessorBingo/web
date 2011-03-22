@@ -14,7 +14,9 @@ module Routes
     end
     
     app.post '/register/?' do
-      if (params[:first_name] == "" || params[:last_name] == "" || params[:password] == "" || params[:email] == "") || Student.first(:email => params[:email])
+      if (session[:user])
+        redirect '/'
+      elsif (params[:first_name] == "" || params[:last_name] == "" || params[:password] == "" || params[:email] == "") || Student.first(:email => params[:email])
         session[:message] = "Registration Failed"
         if Student.first(:email => params[:email])
           session[:message] += " - That email address has already been used"
@@ -42,8 +44,6 @@ module Routes
     end
     
     app.post '/login/?' do
-      pp "Found Login POST"
-      pp params
       session[:user] = Student.auth(params[:email], params[:password])
 
       # Check for basic auth
@@ -58,10 +58,10 @@ module Routes
           authcode = Digest::SHA1.hexdigest(authgenstring)
           s.update(:mobileauth => authcode)
           content_type :json
-          { :data => {:authcode => authcode}}.to_json
+          { :data => {:result => 'Success', :authcode => authcode}}.to_json
         else
           content_type :json
-          { :data => {:authcode => 'FAIL'}}.to_json
+          { :data => {:result => 'FAIL'}}.to_json
         end
       else
         session[:message] = "Invalid username or password"
@@ -78,13 +78,13 @@ module Routes
       if(params[:data])
         pwhash = JSON.parse(params[:data])
         s = Student.first(:mobileauth => pwhash['authcode'])
-        if(s)
+        if(s && pwhash['authcode'] != "INVALID")
           s.update(:mobileauth => "INVALID")
           content_type :json
-          { :data => {:authcode => 'Success'}}.to_json
+          { :data => {:result => 'Success'}}.to_json
         else
           content_type :json
-          { :data => {:authcode => 'FAIL'}}.to_json
+          { :data => {:result => 'FAIL'}}.to_json
         end
         
       end
