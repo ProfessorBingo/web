@@ -1,8 +1,3 @@
-Given /^I am a valid API user$/ do
-  @user = Factory(:user)
-  authorize(@user.email, @user.password)
-end
-
 # Must run this one as rack_test!!!
 Given /^I log in as '(.*)' via JSON$/ do |user|
   Capybara.current_driver = :rack_test

@@ -7,8 +7,6 @@ require File.join(File.dirname(__FILE__), '..', '..', 'profbingo.rb')
 require 'capybara'
 require 'capybara/cucumber'
 require 'rspec'
-require 'rest-client'
-require 'rack/test'
 
 Capybara.app = ProfBingo
 

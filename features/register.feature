@@ -41,3 +41,10 @@ Feature: Registration
     When I click the 'Register' button
     Then I should see 'Registration Failed'
     And I should see 'That email address has already been used'
+    
+  Scenario: User should not be able to visit the register page when they are logged in
+    Given A user 'user' exists
+    And I am logged in as 'user'
+    When I go to 'register'
+    Then I should see Welcome 'user'
+    And I should not see 'Register for Professor Bingo'

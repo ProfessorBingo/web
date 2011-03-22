@@ -99,7 +99,6 @@ DEPENDENCIES
   factory_girl
   haml
   json (~> 1.4.6)
-  rack-test
   rest-client
   rspec
   sinatra

@@ -6,7 +6,11 @@ module Routes
     end
     
     app.get '/register/?' do
-      haml :register
+      if (session[:user])
+        redirect '/'
+      else
+        haml :register
+      end
     end
     
     app.post '/register/?' do
