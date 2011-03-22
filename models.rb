@@ -13,7 +13,7 @@ class Student
   property :last_name,  String, :required => true
   property :email,      String, :required => true
   property :pwhash,     String, :required => true
-  property :mobilehash, String
+  property :mobileauth, String
   
   def password=(pass)
     self.pwhash = Student.encrypt(pass, self.email.to_s)

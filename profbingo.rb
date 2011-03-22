@@ -39,7 +39,7 @@ class ProfBingo < Sinatra::Base
   configure do
     
     s = Student.first_or_new
-    s.email = 'stokes@college.edu'
+    s.email = 'student@college.edu'
     s.last_name = 'Stokes'
     s.first_name = 'Eric'
     s.password = 'password'

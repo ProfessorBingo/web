@@ -50,7 +50,7 @@ module Routes
           authgenstring = credentials["password"] + credentials["email"] + Time.now.to_s
           s = Student.first(credentials["email"])
           authcode = Digest::SHA1.hexdigest(authgenstring)
-          s.mobilehash = authcode
+          s.update(:mobileauth => authcode)
           content_type :json
           puts authgenstring
           { :data => {:authcode => authcode}}.to_json
@@ -67,6 +67,25 @@ module Routes
     app.get '/logout/?' do
       session[:user] = nil
       redirect '/'
+    end
+    
+    app.post '/logout/?' do
+      if(params[:data])
+        pwhash = JSON.parse(params[:data])
+        pp Student.all
+        s = Student.first(:mobileauth => pwhash['authcode'])
+        pp s
+        pp pwhash['authcode']
+        if(s)
+          s.update(:mobileauth => "INVALID")
+          content_type :json
+          { :data => {:authcode => 'Success'}}.to_json
+        else
+          content_type :json
+          { :data => {:authcode => 'FAIL'}}.to_json
+        end
+        
+      end
     end
     
   end

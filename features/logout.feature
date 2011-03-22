@@ -17,4 +17,4 @@ Feature: Logout
     Given A user 'student@school.edu' with password 'password' exists
     And I log in using 'student@school.edu' with password 'password' on a mobile device
     When I log out using a mobile device
-    Then the JSON authcode I recieve should be 'Success'
+    Then the JSON authcode I receive should be 'Success'
