@@ -1,7 +1,5 @@
 Given /^A user '(.*)' exists$/ do |user|
-  pp Student.all
   s = Factory.create(user.to_sym)
-  pp Student.all
 end
 
 Given /^I am logged in as '(.*)'$/ do |user|
@@ -12,3 +10,8 @@ Given /^I am logged in as '(.*)'$/ do |user|
     click_button("Login")
 end
 
+Then /^I should see Welcome '(.*)'$/ do |user|
+  attrs = Factory.attributes_for(user.to_sym)
+  
+  page.should have_content("Welcome " + attrs[:email])
+end
