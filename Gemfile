@@ -10,4 +10,5 @@ gem 'rest-client', :group => :test
 gem 'cucumber', :group => :test
 gem 'capybara', :group => :test
 gem 'rspec', :group => :test
+gem 'rest-client', :group => :test
 gem 'dm-postgres-adapter', :group => :production
