@@ -20,12 +20,18 @@ Given /^I am logged in as '(.*)' with password '(.*)'$/ do |email, pass|
     click_button("Login")
 end
 
+When /^I log out using a mobile device$/ do
+  resulthash = JSON.parse(@result)
+  @result = RestClient.post "http://localhost:3000/logout", :data => { 'pwhash' => resulthash['data']['authcode'] }.to_json
+end
+
 Then /^the JSON authcode I recieve should be '(.*)'$/ do |authcode|
   # This step is a bit fudged, as it's difficult to reproduce the time sensative auth codes
   hash = JSON.parse(@result)
-  if(authcode != 'FAIL')
-    hash['data']['authcode'].should_not == 'FAIL'
+  if(authcode == 'FAIL' || authcode == 'Success')
+    hash['data']['authcode'].should == authcode
   else
-    hash['data']['authcode'].should == 'FAIL'
+    hash['data']['authcode'].should_not == 'FAIL'
   end
 end
+

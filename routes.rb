@@ -64,9 +64,9 @@ module Routes
       end
     end
     
-    app.get '/json/?' do
-      #content_type :json
-      #{ :username => 'test', :pwhash => 'test' }.to_json
+    app.get '/logout/?' do
+      session[:user] = nil
+      redirect '/'
     end
     
   end

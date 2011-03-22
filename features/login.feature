@@ -47,7 +47,7 @@ Feature: Login
     And I log in using 'student@school.edu' with password 'password' on a mobile device
     Then the JSON authcode I recieve should be 'TimeBasedAuthCode'
     
-  Scenario: Login from a mobile device correctly
+  Scenario: Login from a mobile device incorrectly
     Given A user 'student@school.edu' with password 'password' exists
     And I log in using 'student@school.edu' with password 'wrong' on a mobile device
     Then the JSON authcode I recieve should be 'FAIL'

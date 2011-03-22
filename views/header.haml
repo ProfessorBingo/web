@@ -5,6 +5,7 @@
   .login_info
     - if session[:user]
       = "Welcome " + session[:user].email
+      %a{:title => "Logout", :id => "Logout", :href => "/logout/"} Logout
     - else
       %a{:title => "Register", :id => "Register", :href => "/register/"} Register
       %br
