@@ -87,34 +87,46 @@ Feature: Create administrative and moderator users
     Then I should not see 'Administrator Control Panel'
     And I should see Welcome 'user'
     
-  Scenario: Admin has a desire to make another user an Admin
+  Scenario: Admin has a desire to make another user 'user' an Admin
     Given A user 'admin' exists
     And 'admin' is an 'admin'
     And I am logged in as 'admin'
     And I am on 'Control Panel'
     When I click 'Edit User'
-    Then I should see 'Change User Permissions'
+    Then I should see 'Edit User'
+    And I should see 'Find a user to edit'
     And I should not see 'Super Admins have root access'
 
-  Scenario: SuperAdmin has a desire to make another user an Admin
-    Given A user 'superadmin' exists
-    And 'superadmin' is an 'superadmin'
-    And I am logged in as 'superadmin'
-    And I am on 'Control Panel'
-    When I click 'Edit User'
-    Then I should see 'Change User Permissions'
-    And I should see 'Super Admins have root access'
+  Scenario: Admin searches for a user unsuccessfully
+    Given A user 'admin' exists
+    And 'admin' is an 'admin'
+    And I am logged in as 'admin'
+    And I am on 'Edit User'
+    When I fill in 'definetlynotauser' for 'email'
+    And I click the 'Find User' button
+    Then I should see 'Find a user to edit'
+    And 'email' should contain 'definetlynotauser'
+    
+  Scenario: Admin searches for a user successfully
+    Given A user 'admin' exists
+    And A user 'user' exists
+    And 'admin' is an 'admin'
+    And I am logged in as 'admin'
+    And I am on 'Edit User'
+    When I fill in the same 'email' as 'user' into 'email'
+    And I click the 'Find User' button
+    Then I should not see 'Find a user to edit'
+    And I should see 'Super Moderator'
       
   Scenario: Admin makes another user an admin
     Given A user 'admin' exists
     And A user 'user' exists
     And 'admin' is an 'admin'
     And I am logged in as 'admin'
-    And I am on 'Edit User'
+    And I am viewing 'Edit User' of 'user'
     And I should not see 'Super Admins have root access'
-    When I fill in the same 'email' as 'user' into 'email'
-    And I choose 'admin'
-    And I click the 'Submit' button
+    When I choose 'admin'
+    And I click the 'Edit User' button
     Then 'user' should be an 'admin'
     
   Scenario: Admin makes another user a supermod
@@ -122,11 +134,10 @@ Feature: Create administrative and moderator users
     And A user 'user' exists
     And 'admin' is an 'admin'
     And I am logged in as 'admin'
-    And I am on 'Edit User'
+    And I am viewing 'Edit User' of 'user'
     And I should not see 'Super Admins have root access'
-    When I fill in the same 'email' as 'user' into 'email'
-    And I choose 'supermod'
-    And I click the 'Submit' button
+    When I choose 'supermod'
+    And I click the 'Edit User' button
     Then 'user' should be an 'supermod'
     
   Scenario: Admin makes another user a mod
@@ -134,11 +145,10 @@ Feature: Create administrative and moderator users
     And A user 'user' exists
     And 'admin' is an 'admin'
     And I am logged in as 'admin'
-    And I am on 'Edit User'
+    And I am viewing 'Edit User' of 'user'
     And I should not see 'Super Admins have root access'
-    When I fill in the same 'email' as 'user' into 'email'
-    And I choose 'mod'
-    And I click the 'Submit' button
+    When I choose 'mod'
+    And I click the 'Edit User' button
     Then 'user' should be an 'mod'
     
   Scenario: Admin revokes permissions
@@ -146,11 +156,10 @@ Feature: Create administrative and moderator users
     And A user 'user' exists
     And 'admin' is an 'admin'
     And I am logged in as 'admin'
-    And I am on 'Edit User'
+    And I am viewing 'Edit User' of 'user'
     And I should not see 'Super Admins have root access'
-    When I fill in the same 'email' as 'user' into 'email'
-    And I choose 'standard'
-    And I click the 'Submit' button
+    When I choose 'standard'
+    And I click the 'Edit User' button
     Then 'user' should not be an 'superadmin'
     And 'user' should not be an 'admin'
     And 'user' should not be an 'supermod'
@@ -162,10 +171,9 @@ Feature: Create administrative and moderator users
     And 'superadmin' is an 'admin'
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
-    And I am on 'Edit User'
-    When I fill in the same 'email' as 'user' into 'email'
-    And I choose 'admin'
-    And I click the 'Submit' button
+    And I am viewing 'Edit User' of 'user'
+    When I choose 'admin'
+    And I click the 'Edit User' button
     Then 'user' should be a 'admin'
     
   Scenario: SuperAdmin makes another user a superadmin
@@ -174,10 +182,9 @@ Feature: Create administrative and moderator users
     And 'superadmin' is an 'admin'
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
-    And I am on 'Edit User'
-    When I fill in the same 'email' as 'user' into 'email'
-    And I choose 'superadmin'
-    And I click the 'Submit' button
+    And I am viewing 'Edit User' of 'user'
+    When I choose 'superadmin'
+    And I click the 'Edit User' button
     Then 'user' should be a 'superadmin'
     
   Scenario: SuperAdmin demotes other SuperAdmin
@@ -187,10 +194,9 @@ Feature: Create administrative and moderator users
     And 'user' is a 'superadmin'
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
-    And I am on 'Edit User'
-    When I fill in the same 'email' as 'user' into 'email'
-    And I choose 'standard'
-    And I click the 'Submit' button
+    And I am viewing 'Edit User' of 'user'
+    When I choose 'standard'
+    And I click the 'Edit User' button
     Then 'user' should not be an 'superadmin'
     And 'user' should not be an 'admin'
     And 'user' should not be an 'supermod'
@@ -200,20 +206,6 @@ Feature: Create administrative and moderator users
     Given A user 'superadmin' exists
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
-    And I am on 'Edit User'
-    When I fill in the same 'email' as 'superadmin' into 'email'
-    And I choose 'standard'
-    And I click the 'Submit' button
-    Then 'superadmin' should be an 'superadmin'
-    And I should see 'Error: You cannot demote yourself'
-    
-  Scenario: Admin tries to change permissions of a user that does not exist
-    Given A user 'superadmin' exists
-    And 'superadmin' is a 'superadmin'
-    And I am logged in as 'superadmin'
-    And I am on 'Edit User'
-    When I fill in 'blah' for 'email'
-    And I choose 'admin'
-    And I click the 'Submit' button
-    And I should see 'Error: You must enter a valid user'
-    And 'email' should contain 'blah'
+    When I am viewing 'Edit User' of 'superadmin'
+    Then I should see 'This is you'
+    And I should not see 'Super Moderator'

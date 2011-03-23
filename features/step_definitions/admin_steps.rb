@@ -13,3 +13,9 @@ Given /^I make '(.*)' a '(.*)'$/ do |user, type|
   s.save
   s.send(type + "?").should == true
 end
+
+Given /^I am viewing '(.*)' of '(.*)'$/ do |page, user|
+  attrs = Factory.attributes_for(user.to_sym)
+  pp path_to(page) + attrs[:email] + "/"
+  visit(path_to(page) + attrs[:email] + "/")
+end

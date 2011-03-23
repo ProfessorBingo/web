@@ -105,25 +105,37 @@ module Routes
     end
     
     
-    ### Control Panel Routes ###
+    ### Control Panel Routes ###    
     
-    app.get '/controlpanel/?:page?/?' do
+    app.get '/controlpanel/edituser/:user/?' do
       if(session[:user] && session[:user].admin?)
-        @page = params[:page]
-        if(@page.nil?)
-          pp "Could not find page param, defaulting to home"
-          @page = 'home'
+        search = Student.all(:email => params[:user]).count
+        # TODO: Make an actual searcher, not just exact matches...
+        if(params[:user] == session[:user].email)
+          session[:message] = "This is you!"
         end
-        
+        if(search == 1)
+          @user = params[:user]
+        elsif(search > 1)
+          @usersearch = params[:user]
+          session[:message] = "More than one user found"
+        else
+          @usersearch = params[:user]
+          session[:message] = "User '" + params[:user] + "' was not found, please generalize your search"
+        end
+        @page = 'edituser'
         haml :controlpanel
       else
         redirect '/'
       end
     end
     
-    app.get '/controlpanel/edituser/:user?/?' do
+    app.get '/controlpanel/?:page?/?' do
       if(session[:user] && session[:user].admin?)
-        @user = params[:user]
+        @page = params[:page]
+        if(@page.nil?)
+          @page = 'home'
+        end
         haml :controlpanel
       else
         redirect '/'
@@ -134,6 +146,15 @@ module Routes
       if(session[:user] && session[:user].admin?)
         validtypes = ['mod', 'supermod', 'admin']
         s = Student.first(:email => params['email'])
+        pp params
+        pp !params['email'].nil?
+        pp params['type'].nil?
+        if(!params['email'].nil? && params['type'].nil?)
+          pp "Redirecting..."
+          pp '/controlpanel/edituser/' + params['email'] + '/'
+          redirect('/controlpanel/edituser/' + params['email'] + '/')
+        end
+        
         # Make sure the user is not trying to change their own permissions
         if(session[:user] != s && !s.nil?)
           # Extra check to make sure no one has messed with post vars for superadmins
@@ -147,7 +168,7 @@ module Routes
           s.save
         elsif(s.nil?)
           session[:message] = 'Error: You must enter a valid user!'
-          @user = params['email']
+          @usersearch = params['email']
         else
           session[:message] = 'Error: You cannot demote yourself!'
         end

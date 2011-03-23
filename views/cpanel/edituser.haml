@@ -1,26 +1,33 @@
 %h2
-  ="Change User Permissions"
+  ="Edit User"
 %form{:action => "", :method => "post"}
   %fieldset
     %ul
+    - if(!@user)
+      = "Find a user to edit"
       %li
         %label{:for => "email"} Email Address:
-        %input{:type => "text", :name => "email", :value => @user}
-      
+        %input{:type => "text", :name => "email", :value => @usersearch}
       %li
-        %label{:for => "type"} Type 
-        - if(session[:user].superadmin?)
-          ="(Super Admins have root access):"
+        %input{:type => "submit", :value => "Find User"}
+    - else
+      %li
+        =@user
+        %input{:type => "hidden", :name => "email", :value => @user}
+      - if(params[:user] != session[:user].email)
+        %li
+          %label{:for => "type"} Type 
+          - if(session[:user].superadmin?)
+            ="(Super Admins have root access):"
+            %br
+            %input{:type => "radio", :id => "superadmin", :name => "type", :value => "superadmin"} Super Admin
           %br
-          %input{:type => "radio", :id => "superadmin", :name => "type", :value => "superadmin"} Super Admin
-        %br
-        %input{:type => "radio", :id => "admin", :name => "type", :value => "admin", :checked => true} Admin
-        %br
-        %input{:type => "radio", :id => "supermod", :name => "type", :value => "supermod"} Super Moderator
-        %br
-        %input{:type => "radio", :id => "mod", :name => "type", :value => "mod"} Moderator
-        %br
-        %input{:type => "radio", :id => "standard", :name => "type", :value => "regular"} Standard
-
+          %input{:type => "radio", :id => "admin", :name => "type", :value => "admin", :checked => true} Admin
+          %br
+          %input{:type => "radio", :id => "supermod", :name => "type", :value => "supermod"} Super Moderator
+          %br
+          %input{:type => "radio", :id => "mod", :name => "type", :value => "mod"} Moderator
+          %br
+          %input{:type => "radio", :id => "standard", :name => "type", :value => "regular"} Standard
       %li
-        %input{:type => "submit", :value => "Submit"}
+        %input{:type => "submit", :value => "Edit User"}
