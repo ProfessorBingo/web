@@ -25,5 +25,5 @@ end
 Then /^'(.*)' should be (?:a|an) '(.*)'$/ do |user, type|
   attrs = Factory.attributes_for(user.to_sym)
   s = Student.first(:email => attrs[:email])
-  s.send((type + "?")).should == true
+  s.send(type + "?").should == true
 end

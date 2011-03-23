@@ -113,8 +113,48 @@ Feature: Create administrative and moderator users
     And I am on 'Add an Admin'
     And I should not see 'Super Admins have root access'
     When I fill in the same 'email' as 'user' into 'email'
-    And click 'Make user an Admin'
+    And I choose 'admin'
+    And I click the 'Submit' button
     Then 'user' should be an 'admin'
+    
+  Scenario: Admin makes another user a supermod
+    Given A user 'admin' exists
+    And A user 'user' exists
+    And 'admin' is an 'admin'
+    And I am logged in as 'admin'
+    And I am on 'Add an Admin'
+    And I should not see 'Super Admins have root access'
+    When I fill in the same 'email' as 'user' into 'email'
+    And I choose 'supermod'
+    And I click the 'Submit' button
+    Then 'user' should be an 'supermod'
+    
+  Scenario: Admin makes another user a mod
+    Given A user 'admin' exists
+    And A user 'user' exists
+    And 'admin' is an 'admin'
+    And I am logged in as 'admin'
+    And I am on 'Add an Admin'
+    And I should not see 'Super Admins have root access'
+    When I fill in the same 'email' as 'user' into 'email'
+    And I choose 'mod'
+    And I click the 'Submit' button
+    Then 'user' should be an 'mod'
+    
+  Scenario: Admin revokes permissions
+    Given A user 'admin' exists
+    And A user 'user' exists
+    And 'admin' is an 'admin'
+    And I am logged in as 'admin'
+    And I am on 'Add an Admin'
+    And I should not see 'Super Admins have root access'
+    When I fill in the same 'email' as 'user' into 'email'
+    And I choose 'standard'
+    And I click the 'Submit' button
+    Then 'user' should not be an 'superadmin'
+    And 'user' should not be an 'admin'
+    And 'user' should not be an 'supermod'
+    And 'user' should not be an 'mod'
     
   Scenario: SuperAdmin makes another user an admin
     Given A user 'superadmin' exists
@@ -124,7 +164,8 @@ Feature: Create administrative and moderator users
     And I am logged in as 'superadmin'
     And I am on 'Add an Admin'
     When I fill in the same 'email' as 'user' into 'email'
-    And click 'Make user an Admin'
+    And I choose 'admin'
+    And I click the 'Submit' button
     Then 'user' should be a 'admin'
     
   Scenario: SuperAdmin makes another user a superadmin
@@ -135,5 +176,33 @@ Feature: Create administrative and moderator users
     And I am logged in as 'superadmin'
     And I am on 'Add an Admin'
     When I fill in the same 'email' as 'user' into 'email'
-    And click 'Make user a Super Admin'
+    And I choose 'superadmin'
+    And I click the 'Submit' button
     Then 'user' should be a 'superadmin'
+    
+  Scenario: SuperAdmin demotes other SuperAdmin
+    Given A user 'superadmin' exists
+    And A user 'user' exists
+    And I make 'user' a 'superadmin'
+    And 'user' is a 'superadmin'
+    And 'superadmin' is a 'superadmin'
+    And I am logged in as 'superadmin'
+    And I am on 'Add an Admin'
+    When I fill in the same 'email' as 'user' into 'email'
+    And I choose 'standard'
+    And I click the 'Submit' button
+    Then 'user' should not be an 'superadmin'
+    And 'user' should not be an 'admin'
+    And 'user' should not be an 'supermod'
+    And 'user' should not be an 'mod'
+    
+  Scenario: SuperAdmin can't demote self
+    Given A user 'superadmin' exists
+    And 'superadmin' is a 'superadmin'
+    And I am logged in as 'superadmin'
+    And I am on 'Add an Admin'
+    When I fill in the same 'email' as 'superadmin' into 'email'
+    And I choose 'standard'
+    And I click the 'Submit' button
+    Then 'superadmin' should be an 'superadmin'
+    And I should see 'Error: You cannot demote yourself'

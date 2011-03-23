@@ -37,21 +37,51 @@ class ProfBingo < Sinatra::Base
   # Include the models after the database has been initialized
 
   configure do
-    s = Student.first_or_new
-    s.email = 'stokesej@rose-hulman.edu'
-    s.last_name = 'Stokes'
-    s.first_name = 'Eric'
-    s.password = 'password'
-    s.superadmin!
-    s.save
-    
-    s = Student.first_or_new
-    s.email = 'admin'
-    s.last_name = 'Stokes'
-    s.first_name = 'Eric'
-    s.password = 'password'
-    s.admin!
-    s.save
+    # Make my life easier when testing and creates all 5 types of users
+    if(Student.first(:email => 'superadmin').nil?)
+      s = Student.new
+      s.email = 'superadmin'
+      s.last_name = 'Stokes'
+      s.first_name = 'Eric'
+      s.password = 'password'
+      s.superadmin!
+      s.save
+    end
+    if(Student.first(:email => 'admin').nil?)
+      s = Student.new
+      s.email = 'admin'
+      s.last_name = 'Stokes'
+      s.first_name = 'Eric'
+      s.password = 'password'
+      s.admin!
+      s.save
+    end
+    if(Student.first(:email => 'supermod').nil?)
+      s = Student.new
+      s.email = 'supermod'
+      s.last_name = 'Stokes'
+      s.first_name = 'Eric'
+      s.password = 'password'
+      s.supermod!
+      s.save
+    end
+    if(Student.first(:email => 'mod').nil?)
+      s = Student.new
+      s.email = 'mod'
+      s.last_name = 'Stokes'
+      s.first_name = 'Eric'
+      s.password = 'password'
+      s.mod!
+      s.save
+    end
+    if(Student.first(:email => 'user').nil?)
+      s = Student.new
+      s.email = 'user'
+      s.last_name = 'Stokes'
+      s.first_name = 'Eric'
+      s.password = 'password'
+      s.save
+    end
     enable :static, :session
     set :root, File.dirname(__FILE__)
 

@@ -10,18 +10,19 @@
         %input{:type => "text", :name => "email"}
       
       %li
-        %label{:for => "type"} Type (Super Admins have root access):
-        %br
+        %label{:for => "type"} Type 
         - if(session[:user].superadmin?)
-          %input{:type => "radio", :name => "type", :value => "superadmin"} Super Admin
+          ="(Super Admins have root access):"
           %br
-        %input{:type => "radio", :name => "type", :value => "admin", :checked => true} Admin
+          %input{:type => "radio", :id => "superadmin", :name => "type", :value => "superadmin"} Super Admin
         %br
-        %input{:type => "radio", :name => "type", :value => "supermod"} Super Moderator
+        %input{:type => "radio", :id => "admin", :name => "type", :value => "admin", :checked => true} Admin
         %br
-        %input{:type => "radio", :name => "type", :value => "mod"} Moderator
+        %input{:type => "radio", :id => "supermod", :name => "type", :value => "supermod"} Super Moderator
         %br
-        %input{:type => "radio", :name => "type", :value => "regular"} Regular
+        %input{:type => "radio", :id => "mod", :name => "type", :value => "mod"} Moderator
+        %br
+        %input{:type => "radio", :id => "standard", :name => "type", :value => "regular"} Standard
 
       %li
-        %input{:type => "submit", :value => "Login"}
+        %input{:type => "submit", :value => "Submit"}

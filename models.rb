@@ -61,6 +61,9 @@ class Student
   def mod!
     self.permissions = "mod"
   end
+  def standard!
+    self.permissions = nil
+  end
 end
 
 class School

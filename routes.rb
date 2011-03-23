@@ -94,7 +94,7 @@ module Routes
       if(params[:data])
         itemhash = JSON.parse(params[:data])
         s = Student.first(:mobileauth => itemhash['authcode'])
-        if(s && itemhash['authcode'] != "")
+        if(s && itemhash['authcode'] != '')
           content_type :json
           { :data => {:result => 'Success'}}.to_json
         else
@@ -104,6 +104,9 @@ module Routes
       end
     end
     
+    
+    ### Control Panel Routes ###
+    
     app.get '/controlpanel/?:page?/?' do
       if(session[:user] && session[:user].admin?)
         @page = params[:page]
@@ -111,6 +114,31 @@ module Routes
           @page = 'home'
         end
         
+        haml :controlpanel
+      else
+        redirect '/'
+      end
+    end
+    
+    app.post '/controlpanel/addadmin/?' do
+      if(session[:user] && session[:user].admin?)
+        validtypes = ['mod', 'supermod', 'admin']
+        s = Student.first(:email => params['email'])
+        # Make sure the user is not trying to change their own permissions
+        if(session[:user] != s)
+          # Extra check to make sure no one has messed with post vars for superadmins
+          if(params['type'] == 'superadmin' && session[:user].superadmin?)
+            s.superadmin!
+          elsif(validtypes.include?(params['type']))
+            s.send(params['type'] + "!")
+          else
+            s.standard!
+          end
+          s.save
+        else
+          session[:message] = 'Error: You cannot demote yourself!'
+        end
+        @page = 'addadmin'
         haml :controlpanel
       else
         redirect '/'
