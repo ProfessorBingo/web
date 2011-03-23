@@ -43,18 +43,55 @@ Feature: Create administrative and moderator users
     Then I should not see 'Administrator Control Panel'
     And I should see Welcome 'user'
     
-  Scenario: Admin wants to make another user an Admin
+  Scenario: Admin has a desire to make another user an Admin
     Given A user 'admin' exists
     And 'admin' is an 'admin'
     And I am logged in as 'admin'
     And I am on 'Control Panel'
     When I click 'Add an Admin'
     Then I should see 'Make another user an Administrator'
+    And I should see 'Make user an Admin'
+    And I should not see 'Make user a Super Admin'
 
-  Scenario: Admin wants to make another user an Admin
-    Given A user 'admin' exists
-    And 'admin' is an 'admin'
-    And I am logged in as 'admin'
+  Scenario: SuperAdmin has a desire to make another user an Admin
+    Given A user 'superadmin' exists
+    And 'superadmin' is an 'superadmin'
+    And I am logged in as 'superadmin'
     And I am on 'Control Panel'
     When I click 'Add an Admin'
     Then I should see 'Make another user an Administrator'
+    And I should see 'Make user an Admin'
+    And I should see 'Make user a Super Admin'
+      
+  Scenario: Admin makes another user an admin
+    Given A user 'admin' exists
+    And A user 'user' exists
+    And 'admin' is an 'admin'
+    And I am logged in as 'admin'
+    And I am on 'Add an Admin'
+    And I should not see 'Make user a Super Admin'
+    When I fill in the same 'email' as 'user' into 'user'
+    And click 'Make user an Admin'
+    Then 'user' should be an 'admin'
+    
+  Scenario: SuperAdmin makes another user an admin
+    Given A user 'superadmin' exists
+    And A user 'user' exists
+    And 'superadmin' is an 'admin'
+    And 'superadmin' is a 'superadmin'
+    And I am logged in as 'superadmin'
+    And I am on 'Add an Admin'
+    When I fill in the same 'email' as 'user' into 'user'
+    And click 'Make user an Admin'
+    Then 'user' should be a 'admin'
+    
+  Scenario: SuperAdmin makes another user a superadmin
+    Given A user 'superadmin' exists
+    And A user 'user' exists
+    And 'superadmin' is an 'admin'
+    And 'superadmin' is a 'superadmin'
+    And I am logged in as 'superadmin'
+    And I am on 'Add an Admin'
+    When I fill in the same 'email' as 'user' into 'user'
+    And click 'Make user a Super Admin'
+    Then 'user' should be a 'superadmin'

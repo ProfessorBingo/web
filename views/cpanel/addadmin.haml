@@ -1,2 +1,15 @@
 %h2
   ="Make another user an Administrator"
+  %form{:action => "", :method => "post"}
+    %fieldset
+      %ul
+        %li
+          %label{:for => "email"} Email Address:
+          %input{:type => "text", :name => "email", :value => @email}
+        - if(session[:user].superadmin?)
+          %li
+            %label{:for => "type"} Type:
+            %input{:type => "radio", :name => "type", :value => "admin"} Admin
+            %input{:type => "radio", :name => "type", :value => "superadmin"} Super Admin
+        %li
+          %input{:type => "submit", :value => "Login"}
