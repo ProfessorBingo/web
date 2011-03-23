@@ -8,21 +8,17 @@ end
 class Student
   include DataMapper::Resource
   
-  property :id,         Serial
-  property :first_name, String, :required => true
-  property :last_name,  String, :required => true
-  property :email,      String, :required => true
-  property :pwhash,     String, :required => true
-  property :mobileauth, String
+  property :id,          Serial
+  property :first_name,  String, :required => true
+  property :last_name,   String, :required => true
+  property :email,       String, :required => true
+  property :pwhash,      String, :required => true
+  property :mobileauth,  String
+  property :permissions, String
   
   def password=(pass)
     self.pwhash = Student.encrypt(pass, self.email.to_s)
   end
-  # def emailaddress=(email)
-  #   puts "callingemail"
-  #   @emailforencrypt = email
-  #   self.email = email
-  # end
 
   def self.encrypt(pass, salt)
     totalpword = pass + salt

@@ -25,7 +25,6 @@ class ProfBingo < Sinatra::Base
     DataMapper.setup(:default, 'sqlite3://' + Dir.pwd + '/profbingo_test.db') 
     DataMapper.finalize
     DataMapper.auto_upgrade!
-    Student.all.destroy
   end
 
   configure :development do
@@ -38,12 +37,12 @@ class ProfBingo < Sinatra::Base
   # Include the models after the database has been initialized
 
   configure do
-    
     s = Student.first_or_new
-    s.email = 'student@college.edu'
+    s.email = 'stokesej@rose-hulman.edu'
     s.last_name = 'Stokes'
     s.first_name = 'Eric'
     s.password = 'password'
+    s.permissions = 'admin'
     s.save
     enable :static, :session
     set :root, File.dirname(__FILE__)

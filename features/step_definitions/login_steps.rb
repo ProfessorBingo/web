@@ -1,5 +1,7 @@
 Given /^A user '(.*)' exists$/ do |user|
-  s = Factory.create(user.to_sym)
+  if(!Student.first(:email => user))
+    s = Factory.create(user.to_sym)
+  end
 end
 
 Given /^I am logged in as '(.*)'$/ do |user|
