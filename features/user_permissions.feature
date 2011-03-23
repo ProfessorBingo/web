@@ -22,18 +22,21 @@ Feature: Create administrative and moderator users
     
   Scenario: Admins can get to control panel from link
     Given A user 'admin' exists
+    And I am logged in as 'admin'
     And I am on the home page
     When I click 'Control Panel'
     Then I should see 'Administrator Control Panel'
     
   Scenario: Admins can get to control panel from url
     Given A user 'admin' exists
+    And I am logged in as 'admin'
     And I am on the home page
     When I go to '/controlpanel'
     Then I should see 'Administrator Control Panel'
     
   Scenario: Non-Admins cannot get to control panel
     Given A user 'user' exists
+    And I am logged in as 'user'
     And I am on the home page
     And I should not see 'Control Panel'
     When I go to '/controlpanel'
