@@ -125,7 +125,7 @@ module Routes
         validtypes = ['mod', 'supermod', 'admin']
         s = Student.first(:email => params['email'])
         # Make sure the user is not trying to change their own permissions
-        if(session[:user] != s)
+        if(session[:user] != s && !s.nil?)
           # Extra check to make sure no one has messed with post vars for superadmins
           if(params['type'] == 'superadmin' && session[:user].superadmin?)
             s.superadmin!
@@ -135,6 +135,9 @@ module Routes
             s.standard!
           end
           s.save
+        elsif(s.nil?)
+          session[:message] = 'Error: You must enter a valid user!'
+          @user = params['email']
         else
           session[:message] = 'Error: You cannot demote yourself!'
         end

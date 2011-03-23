@@ -196,7 +196,7 @@ Feature: Create administrative and moderator users
     And 'user' should not be an 'supermod'
     And 'user' should not be an 'mod'
     
-  Scenario: SuperAdmin can't demote self
+  Scenario: SuperAdmin tries to demote self
     Given A user 'superadmin' exists
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
@@ -206,3 +206,14 @@ Feature: Create administrative and moderator users
     And I click the 'Submit' button
     Then 'superadmin' should be an 'superadmin'
     And I should see 'Error: You cannot demote yourself'
+    
+  Scenario: Admin tries to change permissions of a user that does not exist
+    Given A user 'superadmin' exists
+    And 'superadmin' is a 'superadmin'
+    And I am logged in as 'superadmin'
+    And I am on 'Add an Admin'
+    When I fill in 'blah' for 'email'
+    And I choose 'admin'
+    And I click the 'Submit' button
+    And I should see 'Error: You must enter a valid user'
+    And 'email' should contain 'blah'
