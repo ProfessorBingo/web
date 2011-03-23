@@ -19,3 +19,7 @@ Given /^I am viewing '(.*)' of '(.*)'$/ do |page, user|
   pp path_to(page) + attrs[:email] + "/"
   visit(path_to(page) + attrs[:email] + "/")
 end
+
+Then /^the '(.*)' radio button should be checked$/ do |name|
+  page.should have_selector 'input[type=radio][checked=checked][id=' + name + ']'
+end

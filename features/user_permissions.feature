@@ -117,6 +117,7 @@ Feature: Create administrative and moderator users
     And I click the 'Find User' button
     Then I should not see 'Find a user to edit'
     And I should see 'Super Moderator'
+    And the 'standard' radio button should be checked 
       
   Scenario: Admin makes another user an admin
     Given A user 'admin' exists
@@ -136,9 +137,10 @@ Feature: Create administrative and moderator users
     And I am logged in as 'admin'
     And I am viewing 'Edit User' of 'user'
     And I should not see 'Super Admins have root access'
+    And the 'standard' radio button should be checked
     When I choose 'supermod'
     And I click the 'Edit User' button
-    Then 'user' should be an 'supermod'
+    Then 'user' should be a 'supermod'
     
   Scenario: Admin makes another user a mod
     Given A user 'admin' exists
@@ -147,6 +149,7 @@ Feature: Create administrative and moderator users
     And I am logged in as 'admin'
     And I am viewing 'Edit User' of 'user'
     And I should not see 'Super Admins have root access'
+    And the 'standard' radio button should be checked
     When I choose 'mod'
     And I click the 'Edit User' button
     Then 'user' should be an 'mod'
@@ -158,6 +161,7 @@ Feature: Create administrative and moderator users
     And I am logged in as 'admin'
     And I am viewing 'Edit User' of 'user'
     And I should not see 'Super Admins have root access'
+    And the 'standard' radio button should be checked
     When I choose 'standard'
     And I click the 'Edit User' button
     Then 'user' should not be an 'superadmin'
@@ -172,6 +176,7 @@ Feature: Create administrative and moderator users
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
     And I am viewing 'Edit User' of 'user'
+    And the 'standard' radio button should be checked
     When I choose 'admin'
     And I click the 'Edit User' button
     Then 'user' should be a 'admin'
@@ -183,6 +188,7 @@ Feature: Create administrative and moderator users
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
     And I am viewing 'Edit User' of 'user'
+    And the 'standard' radio button should be checked
     When I choose 'superadmin'
     And I click the 'Edit User' button
     Then 'user' should be a 'superadmin'
@@ -195,6 +201,7 @@ Feature: Create administrative and moderator users
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
     And I am viewing 'Edit User' of 'user'
+    And the 'superadmin' radio button should be checked
     When I choose 'standard'
     And I click the 'Edit User' button
     Then 'user' should not be an 'superadmin'

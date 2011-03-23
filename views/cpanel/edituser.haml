@@ -12,22 +12,22 @@
         %input{:type => "submit", :value => "Find User"}
     - else
       %li
-        =@user
-        %input{:type => "hidden", :name => "email", :value => @user}
+        =@user.email
+        %input{:type => "hidden", :name => "email", :value => @user.email}
       - if(params[:user] != session[:user].email)
         %li
           %label{:for => "type"} Type 
           - if(session[:user].superadmin?)
             ="(Super Admins have root access):"
             %br
-            %input{:type => "radio", :id => "superadmin", :name => "type", :value => "superadmin"} Super Admin
+            %input{:type => "radio", :id => "superadmin", :name => "type", :value => "superadmin", :checked => @user.superadmin?} Super Admin
           %br
-          %input{:type => "radio", :id => "admin", :name => "type", :value => "admin", :checked => true} Admin
+          %input{:type => "radio", :id => "admin", :name => "type", :value => "admin", :checked => @user.admin?} Admin
           %br
-          %input{:type => "radio", :id => "supermod", :name => "type", :value => "supermod"} Super Moderator
+          %input{:type => "radio", :id => "supermod", :name => "type", :value => "supermod", :checked => @user.supermod?} Super Moderator
           %br
-          %input{:type => "radio", :id => "mod", :name => "type", :value => "mod"} Moderator
+          %input{:type => "radio", :id => "mod", :name => "type", :value => "mod", :checked => @user.mod?} Moderator
           %br
-          %input{:type => "radio", :id => "standard", :name => "type", :value => "regular"} Standard
+          %input{:type => "radio", :id => "standard", :name => "type", :value => "regular", :checked => !@user.mod?} Standard
       %li
         %input{:type => "submit", :value => "Edit User"}

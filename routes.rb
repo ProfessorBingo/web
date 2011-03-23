@@ -115,7 +115,7 @@ module Routes
           session[:message] = "This is you!"
         end
         if(search == 1)
-          @user = params[:user]
+          @user = Student.first(:email => params[:user])
         elsif(search > 1)
           @usersearch = params[:user]
           session[:message] = "More than one user found"
@@ -172,6 +172,7 @@ module Routes
         else
           session[:message] = 'Error: You cannot demote yourself!'
         end
+        @user = Student.first(:email => params['email'])
         @page = 'edituser'
         haml :controlpanel
       else
