@@ -38,7 +38,7 @@ class Student
   end
   
   def superadmin?
-    (!(self.permissions == "superadmin").nil? && !self.permissions.nil?)
+    self.permissions == "superadmin"
   end
   def superadmin!
     self.permissions = "superadmin"

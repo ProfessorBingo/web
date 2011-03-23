@@ -10,6 +10,50 @@ Feature: Create administrative and moderator users
     When I create a user 'user'
     Then 'user' should not be an 'admin'
     And 'admin' should be an 'admin'
+
+  Scenario: Make sure superadmins can exist
+    Given '0' users exist
+    And A user 'admin' exists
+    And more than '0' users exist
+    When I create a user 'superadmin'
+    Then 'superadmin' should be a 'superadmin'
+    And 'superadmin' should be an 'admin'
+    And 'superadmin' should be a 'supermod'
+    And 'superadmin' should be a 'mod'
+    And 'admin' should be an 'admin'
+
+  Scenario: Make sure admins can exist
+    Given '0' users exist
+    And A user 'user' exists
+    And more than '0' users exist
+    When I create a user 'admin'
+    Then 'admin' should not be a 'superadmin'
+    And 'admin' should be an 'admin'
+    And 'admin' should be a 'supermod'
+    And 'admin' should be a 'mod'
+    And 'user' should not be a 'mod'
+
+  Scenario: Make sure super moderators can exist
+    Given '0' users exist
+    And A user 'admin' exists
+    And more than '0' users exist
+    When I create a user 'supermod'
+    Then 'supermod' should not be a 'superadmin'
+    And 'supermod' should not be an 'admin'
+    And 'supermod' should be a 'supermod'
+    And 'supermod' should be a 'mod'
+    And 'admin' should be an 'admin'
+
+  Scenario: Make sure moderators can exist
+    Given '0' users exist
+    And A user 'admin' exists
+    And more than '0' users exist
+    When I create a user 'mod'
+    Then 'mod' should not be a 'superadmin'
+    And 'mod' should not be an 'admin'
+    And 'mod' should not be a 'supermod'
+    And 'mod' should be a 'mod'
+    And 'admin' should be an 'admin'
     
   Scenario: Make sure moderators can exist
     Given '0' users exist
@@ -50,8 +94,7 @@ Feature: Create administrative and moderator users
     And I am on 'Control Panel'
     When I click 'Add an Admin'
     Then I should see 'Make another user an Administrator'
-    And I should see 'Make user an Admin'
-    And I should not see 'Make user a Super Admin'
+    And I should not see 'Super Admins have root access'
 
   Scenario: SuperAdmin has a desire to make another user an Admin
     Given A user 'superadmin' exists
@@ -60,8 +103,7 @@ Feature: Create administrative and moderator users
     And I am on 'Control Panel'
     When I click 'Add an Admin'
     Then I should see 'Make another user an Administrator'
-    And I should see 'Make user an Admin'
-    And I should see 'Make user a Super Admin'
+    And I should see 'Super Admins have root access'
       
   Scenario: Admin makes another user an admin
     Given A user 'admin' exists
@@ -69,8 +111,8 @@ Feature: Create administrative and moderator users
     And 'admin' is an 'admin'
     And I am logged in as 'admin'
     And I am on 'Add an Admin'
-    And I should not see 'Make user a Super Admin'
-    When I fill in the same 'email' as 'user' into 'user'
+    And I should not see 'Super Admins have root access'
+    When I fill in the same 'email' as 'user' into 'email'
     And click 'Make user an Admin'
     Then 'user' should be an 'admin'
     
@@ -81,7 +123,7 @@ Feature: Create administrative and moderator users
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
     And I am on 'Add an Admin'
-    When I fill in the same 'email' as 'user' into 'user'
+    When I fill in the same 'email' as 'user' into 'email'
     And click 'Make user an Admin'
     Then 'user' should be a 'admin'
     
@@ -92,6 +134,6 @@ Feature: Create administrative and moderator users
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
     And I am on 'Add an Admin'
-    When I fill in the same 'email' as 'user' into 'user'
+    When I fill in the same 'email' as 'user' into 'email'
     And click 'Make user a Super Admin'
     Then 'user' should be a 'superadmin'

@@ -1,15 +1,27 @@
 %h2
   ="Make another user an Administrator"
-  %form{:action => "", :method => "post"}
-    %fieldset
-      %ul
-        %li
-          %label{:for => "email"} Email Address:
-          %input{:type => "text", :name => "email", :value => @email}
+%h2
+  ="Change User's Permissions"
+%form{:action => "", :method => "post"}
+  %fieldset
+    %ul
+      %li
+        %label{:for => "email"} Email Address:
+        %input{:type => "text", :name => "email"}
+      
+      %li
+        %label{:for => "type"} Type (Super Admins have root access):
+        %br
         - if(session[:user].superadmin?)
-          %li
-            %label{:for => "type"} Type:
-            %input{:type => "radio", :name => "type", :value => "admin"} Admin
-            %input{:type => "radio", :name => "type", :value => "superadmin"} Super Admin
-        %li
-          %input{:type => "submit", :value => "Login"}
+          %input{:type => "radio", :name => "type", :value => "superadmin"} Super Admin
+          %br
+        %input{:type => "radio", :name => "type", :value => "admin", :checked => true} Admin
+        %br
+        %input{:type => "radio", :name => "type", :value => "supermod"} Super Moderator
+        %br
+        %input{:type => "radio", :name => "type", :value => "mod"} Moderator
+        %br
+        %input{:type => "radio", :name => "type", :value => "regular"} Regular
+
+      %li
+        %input{:type => "submit", :value => "Login"}
