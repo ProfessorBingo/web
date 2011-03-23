@@ -42,3 +42,5 @@ Feature: Create administrative and moderator users
     When I go to '/controlpanel'
     Then I should not see 'Administrator Control Panel'
     And I should see Welcome 'user'
+    
+  Scenario: Admin wants to make another user an Admin

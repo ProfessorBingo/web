@@ -105,7 +105,7 @@ module Routes
     end
     
     app.get '/controlpanel/?' do
-      if(session[:user].permissions == "admin")
+      if(session[:user].admin?)
         haml :controlpanel
       else
         redirect '/'

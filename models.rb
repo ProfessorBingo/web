@@ -14,7 +14,7 @@ class Student
   property :email,       String, :required => true
   property :pwhash,      String, :required => true
   property :mobileauth,  String
-  property :permissions, String
+  property :permissions, String, :accessor => :protected
   
   def password=(pass)
     self.pwhash = Student.encrypt(pass, self.email.to_s)
@@ -35,6 +35,31 @@ class Student
     u = Student.first(:email => login, :pwhash => passhash)
     return nil if u.nil?
     return u
+  end
+  
+  def superadmin?
+    (!(self.permissions == "superadmin").nil? && !self.permissions.nil?)
+  end
+  def superadmin!
+    self.permissions = "superadmin"
+  end
+  def admin?
+    (!(self.permissions =~ /^(super)?admin$/).nil? && !self.permissions.nil?)
+  end
+  def admin!
+    self.permissions = "admin"
+  end
+  def supermod?
+    (!(self.permissions =~ /^((super)?(admin)?|supermod)$/).nil? && !self.permissions.nil?)
+  end
+  def supermod!
+    self.permissions = "supermod"
+  end
+  def mod?
+    (!(self.permissions =~ /^((super)?(admin|mod))$/).nil? && !self.permissions.nil?)
+  end
+  def mod!
+    self.permissions = "mod"
   end
 end
 

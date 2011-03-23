@@ -6,7 +6,7 @@
     - if session[:user]
       = "Welcome " + session[:user].email
       %a{:title => "Logout", :id => "Logout", :href => "/logout/"} Logout
-      - if session[:user].permissions == "admin"
+      - if session[:user].admin?
         %a{:title => "Control Panel", :id => "ControlPanel", :href => "/controlpanel/"} Control Panel
     - else
       %a{:title => "Register", :id => "Register", :href => "/register/"} Register

@@ -42,7 +42,7 @@ class ProfBingo < Sinatra::Base
     s.last_name = 'Stokes'
     s.first_name = 'Eric'
     s.password = 'password'
-    s.permissions = 'admin'
+    s.superadmin!
     s.save
     enable :static, :session
     set :root, File.dirname(__FILE__)

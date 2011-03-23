@@ -12,11 +12,11 @@ end
 Then /^'(.*)' should not be (?:a|an) '(.*)'$/ do |user, type|
   attrs = Factory.attributes_for(user.to_sym)
   s = Student.first(:email => attrs[:email])
-  s.permissions.should_not == type
+  s.send((type + "?")).should == false
 end
 
 Then /^'(.*)' should be (?:a|an) '(.*)'$/ do |user, type|
   attrs = Factory.attributes_for(user.to_sym)
   s = Student.first(:email => attrs[:email])
-  s.permissions.should == type
+  s.send((type + "?")).should == true
 end
