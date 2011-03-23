@@ -20,8 +20,8 @@ module NavigationHelpers
       '/logout'      
     when /controlpanel/, /Control Panel/i
       '/controlpanel'
-    when /controlpanel\/addadmin/, /Add (an)? Admin/i
-      '/controlpanel/addadmin'
+    when /Edit User/i
+      '/controlpanel/edituser/'
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

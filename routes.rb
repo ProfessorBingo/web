@@ -111,6 +111,7 @@ module Routes
       if(session[:user] && session[:user].admin?)
         @page = params[:page]
         if(@page.nil?)
+          pp "Could not find page param, defaulting to home"
           @page = 'home'
         end
         
@@ -120,7 +121,16 @@ module Routes
       end
     end
     
-    app.post '/controlpanel/addadmin/?' do
+    app.get '/controlpanel/edituser/:user?/?' do
+      if(session[:user] && session[:user].admin?)
+        @user = params[:user]
+        haml :controlpanel
+      else
+        redirect '/'
+      end
+    end
+    
+    app.post '/controlpanel/edituser/:user?/?' do
       if(session[:user] && session[:user].admin?)
         validtypes = ['mod', 'supermod', 'admin']
         s = Student.first(:email => params['email'])
@@ -141,7 +151,7 @@ module Routes
         else
           session[:message] = 'Error: You cannot demote yourself!'
         end
-        @page = 'addadmin'
+        @page = 'edituser'
         haml :controlpanel
       else
         redirect '/'

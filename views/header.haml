@@ -1,7 +1,7 @@
 .header
   .title
     %h1
-      ="Professor Bingo!"
+      %a{:title => "Professor Bingo", :id => "ProfBingo", :href => "/"} Professor Bingo!
   .login_info
     - if session[:user]
       = "Welcome " + session[:user].email

@@ -7,9 +7,13 @@
   %body
     =haml :header
     .controlnav
-      ="Tasks:"
-      %a{:title => "Home", :id => "ControlPanelHome", :href => "/controlpanel/home/"} Control Panel Home
       %br
-      %a{:title => "Add an Admin", :id => "ControlPanelAddAdmin", :href => "/controlpanel/addadmin/"} Make a user an Admin
+      ="Tasks:"
+      %br
+      %a{:title => "Home", :id => "Home", :href => "/"} Home
+      %br
+      %a{:title => "CPanelHome", :id => "ControlPanelHome", :href => "/controlpanel/"} Control Panel Home
+      %br
+      %a{:title => "Edit User", :id => "ControlPanelEditUser", :href => "/controlpanel/edituser/"} Edit User
     .main
       =haml ('cpanel/'+ @page).to_sym rescue redirect '/controlpanel/'

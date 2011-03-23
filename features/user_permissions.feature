@@ -92,8 +92,8 @@ Feature: Create administrative and moderator users
     And 'admin' is an 'admin'
     And I am logged in as 'admin'
     And I am on 'Control Panel'
-    When I click 'Add an Admin'
-    Then I should see 'Make another user an Administrator'
+    When I click 'Edit User'
+    Then I should see 'Change User Permissions'
     And I should not see 'Super Admins have root access'
 
   Scenario: SuperAdmin has a desire to make another user an Admin
@@ -101,8 +101,8 @@ Feature: Create administrative and moderator users
     And 'superadmin' is an 'superadmin'
     And I am logged in as 'superadmin'
     And I am on 'Control Panel'
-    When I click 'Add an Admin'
-    Then I should see 'Make another user an Administrator'
+    When I click 'Edit User'
+    Then I should see 'Change User Permissions'
     And I should see 'Super Admins have root access'
       
   Scenario: Admin makes another user an admin
@@ -110,7 +110,7 @@ Feature: Create administrative and moderator users
     And A user 'user' exists
     And 'admin' is an 'admin'
     And I am logged in as 'admin'
-    And I am on 'Add an Admin'
+    And I am on 'Edit User'
     And I should not see 'Super Admins have root access'
     When I fill in the same 'email' as 'user' into 'email'
     And I choose 'admin'
@@ -122,7 +122,7 @@ Feature: Create administrative and moderator users
     And A user 'user' exists
     And 'admin' is an 'admin'
     And I am logged in as 'admin'
-    And I am on 'Add an Admin'
+    And I am on 'Edit User'
     And I should not see 'Super Admins have root access'
     When I fill in the same 'email' as 'user' into 'email'
     And I choose 'supermod'
@@ -134,7 +134,7 @@ Feature: Create administrative and moderator users
     And A user 'user' exists
     And 'admin' is an 'admin'
     And I am logged in as 'admin'
-    And I am on 'Add an Admin'
+    And I am on 'Edit User'
     And I should not see 'Super Admins have root access'
     When I fill in the same 'email' as 'user' into 'email'
     And I choose 'mod'
@@ -146,7 +146,7 @@ Feature: Create administrative and moderator users
     And A user 'user' exists
     And 'admin' is an 'admin'
     And I am logged in as 'admin'
-    And I am on 'Add an Admin'
+    And I am on 'Edit User'
     And I should not see 'Super Admins have root access'
     When I fill in the same 'email' as 'user' into 'email'
     And I choose 'standard'
@@ -162,7 +162,7 @@ Feature: Create administrative and moderator users
     And 'superadmin' is an 'admin'
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
-    And I am on 'Add an Admin'
+    And I am on 'Edit User'
     When I fill in the same 'email' as 'user' into 'email'
     And I choose 'admin'
     And I click the 'Submit' button
@@ -174,7 +174,7 @@ Feature: Create administrative and moderator users
     And 'superadmin' is an 'admin'
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
-    And I am on 'Add an Admin'
+    And I am on 'Edit User'
     When I fill in the same 'email' as 'user' into 'email'
     And I choose 'superadmin'
     And I click the 'Submit' button
@@ -187,7 +187,7 @@ Feature: Create administrative and moderator users
     And 'user' is a 'superadmin'
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
-    And I am on 'Add an Admin'
+    And I am on 'Edit User'
     When I fill in the same 'email' as 'user' into 'email'
     And I choose 'standard'
     And I click the 'Submit' button
@@ -200,7 +200,7 @@ Feature: Create administrative and moderator users
     Given A user 'superadmin' exists
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
-    And I am on 'Add an Admin'
+    And I am on 'Edit User'
     When I fill in the same 'email' as 'superadmin' into 'email'
     And I choose 'standard'
     And I click the 'Submit' button
@@ -211,7 +211,7 @@ Feature: Create administrative and moderator users
     Given A user 'superadmin' exists
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
-    And I am on 'Add an Admin'
+    And I am on 'Edit User'
     When I fill in 'blah' for 'email'
     And I choose 'admin'
     And I click the 'Submit' button
