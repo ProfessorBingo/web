@@ -1,4 +1,4 @@
-Given /^A user '(.*)' exists$/ do |user|
+Given /^[Aa] user '(.*)' exists$/ do |user|
   if(!Student.first(:email => user))
     s = Factory.create(user.to_sym)
   end
