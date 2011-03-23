@@ -13,12 +13,28 @@ Factory.define :user_two, :class => Student do |u|
   u.password "password"
 end
 
+Factory.define :superadmin, :class => Student do |u|
+  u.email "superadmin@school.edu"
+  u.first_name "Super"
+  u.last_name "Administrator"
+  u.password "password"
+  u.permissions "superadmin"
+end
+
 Factory.define :admin, :class => Student do |u|
   u.email "admin@school.edu"
   u.first_name "Admin"
   u.last_name "istrator"
   u.password "password"
   u.permissions "admin"
+end
+
+Factory.define :supermod, :class => Student do |u|
+  u.email "mod@school.edu"
+  u.first_name "Super"
+  u.last_name "Moderator"
+  u.password "password"
+  u.permissions "supermod"
 end
 
 Factory.define :mod, :class => Student do |u|

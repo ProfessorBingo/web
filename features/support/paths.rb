@@ -18,7 +18,7 @@ module NavigationHelpers
       '/login'
     when /logout/
       '/logout'      
-    when /controlpanel/
+    when /controlpanel/, /Control Panel/i
       '/controlpanel'
 
     # Add more mappings here.

@@ -6,5 +6,10 @@
     %link{:href => "css/style.css", :media => "screen", :rel => "stylesheet"}
   %body
     =haml :header
-    %h2
-      ="Administrator Control Panel"
+    .controlnav
+      ="Tasks:"
+      %a{:title => "Home", :id => "ControlPanelHome", :href => "/controlpanel/home/"} Control Panel Home
+      %br
+      %a{:title => "Add an Admin", :id => "ControlPanelAddAdmin", :href => "/controlpanel/addadmin/"} Make a user an Admin
+    .main
+      =haml ('cpanel/'+ @page).to_sym rescue redirect '/controlpanel/'

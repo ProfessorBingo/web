@@ -44,3 +44,17 @@ Feature: Create administrative and moderator users
     And I should see Welcome 'user'
     
   Scenario: Admin wants to make another user an Admin
+    Given A user 'admin' exists
+    And 'admin' is an 'admin'
+    And I am logged in as 'admin'
+    And I am on 'Control Panel'
+    When I click 'Add an Admin'
+    Then I should see 'Make another user an Administrator'
+
+  Scenario: Admin wants to make another user an Admin
+    Given A user 'admin' exists
+    And 'admin' is an 'admin'
+    And I am logged in as 'admin'
+    And I am on 'Control Panel'
+    When I click 'Add an Admin'
+    Then I should see 'Make another user an Administrator'

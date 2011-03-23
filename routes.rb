@@ -104,8 +104,13 @@ module Routes
       end
     end
     
-    app.get '/controlpanel/?' do
-      if(session[:user].admin?)
+    app.get '/controlpanel/?:page?/?' do
+      if(session[:user] && session[:user].admin?)
+        @page = params[:page]
+        if(@page.nil?)
+          @page = 'home'
+        end
+        
         haml :controlpanel
       else
         redirect '/'
