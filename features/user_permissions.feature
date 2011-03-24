@@ -92,10 +92,9 @@ Feature: Create administrative and moderator users
     And 'admin' is an 'admin'
     And I am logged in as 'admin'
     And I am on 'Control Panel'
-    When I click 'Edit User'
+    When I click 'Users'
     Then I should see 'Edit User'
-    And I should see 'Find a user to edit'
-    And I should not see 'Super Admins have root access'
+    And I should see 'Listing of users'
 
   Scenario: Admin searches for a user unsuccessfully
     Given A user 'admin' exists

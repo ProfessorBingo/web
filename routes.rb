@@ -106,7 +106,7 @@ module Routes
     
     
     ### Control Panel Routes ###    
-    app.get '/controlpanel/edituser/:user/?' do
+    app.get '/controlpanel/users/edit/:user/?' do
       if(session[:user] && session[:user].admin?)
         search = Student.all(:email => params[:user]).count
         # TODO: Make an actual searcher, not just exact matches...
@@ -122,7 +122,8 @@ module Routes
           @usersearch = params[:user]
           session[:message] = "User '" + params[:user] + "' was not found, please generalize your search"
         end
-        @page = 'edituser'
+        @page = 'users'
+        @action = 'edit'
         haml :controlpanel
       else
         redirect '/'
@@ -182,14 +183,14 @@ module Routes
       end
     end
     
-    app.post '/controlpanel/edituser/:user?/?' do
+    app.post '/controlpanel/users/edit/:user?/?' do
       if(session[:user] && session[:user].admin?)
         
         validtypes = ['mod', 'supermod', 'admin']
         s = Student.first(:email => params['email'])
         
         if(!params['email'].nil? && params['type'].nil?)
-          redirect('/controlpanel/edituser/' + params['email'] + '/')
+          redirect('/controlpanel/users/edit/' + params['email'] + '/')
         end
         
         # Make sure the user is not trying to change their own permissions
@@ -210,7 +211,8 @@ module Routes
           session[:message] = 'Error: You cannot demote yourself!'
         end
         @user = Student.first(:email => params['email'])
-        @page = 'edituser'
+        @page = 'users'
+        @action = 'edit'
         haml :controlpanel
       else
         redirect '/'
