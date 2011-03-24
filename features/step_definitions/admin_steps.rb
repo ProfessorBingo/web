@@ -37,3 +37,13 @@ Given /^[Aa] school '(.*)' exists$/ do |school|
     Factory.create(school.to_sym)
   end
 end
+
+When /^I click school name 'rose'$/ do
+  attrs = Factory.attributes_for(school.to_sym)
+  click_on(attrs[:name])
+end
+
+Then /^I should see a School '(.*)'$/ do |school|
+  attrs = Factory.attributes_for(school.to_sym)
+  page.should have_content(attrs[:name])
+end
