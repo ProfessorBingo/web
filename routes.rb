@@ -106,7 +106,6 @@ module Routes
     
     
     ### Control Panel Routes ###    
-    
     app.get '/controlpanel/edituser/:user/?' do
       if(session[:user] && session[:user].admin?)
         search = Student.all(:email => params[:user]).count
@@ -155,6 +154,31 @@ module Routes
         haml :controlpanel
       else
         redirect '/'
+      end
+    end
+    
+    app.post '/controlpanel/schools/add/?' do
+      if(session[:user] && session[:user].admin?)
+        @name = params['name']
+        @short = params['short']
+        @emailext = params['emailext']
+        @page = 'schools'
+        @action = 'add'
+        if(School.first(:name => params['name']))
+          session[:message] = 'That school already exists!'
+        elsif(School.first(:emailext => params['emailext']))
+          name = School.first(:emailext => params['emailext']).name
+          session[:message] = "That email extension already exists (#{name})!"
+        elsif(!params['name'].nil? && params['name'] != "")
+          School.create(:name => params['name'], :short => params['short'], :emailext => params['emailext'])
+          session[:message] = 'School added successfully!'
+          redirect('/controlpanel/schools/')
+        else
+          session[:message] = 'You need to enter a school name!'
+        end
+        haml :controlpanel
+      else
+        redirect('/')
       end
     end
     

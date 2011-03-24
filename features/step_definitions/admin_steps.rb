@@ -26,3 +26,10 @@ end
 Given /^my current url is '(.*)'$/ do |path|
   visit(path)
 end
+
+Given /^[Aa] school '(.*)' exists$/ do |school|
+  attrs = Factory.attributes_for(school.to_sym)
+  if(!School.first(:name => attrs[:name]))
+    Factory.create(school.to_sym)
+  end
+end

@@ -5,13 +5,13 @@
     %ul
       %li
         %label{:for => "name"} School Name:
-        %input{:type => "text", :name => "name"}
+        %input{:type => "text", :name => "name", :value => @name}
       %li
         %label{:for => "short"} Abbreviation:
-        %input{:type => "text", :name => "short"}
+        %input{:type => "text", :name => "short", :value => @short}
       %li
         %label{:for => "emailext"} Email Extension:
-        %input{:type => "text", :name => "emailext"}
+        %input{:type => "text", :name => "emailext", :value => @emailext}
       %li
         %input{:type => "submit", :value => "Add New School"}
         
