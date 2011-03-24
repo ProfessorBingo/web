@@ -23,6 +23,10 @@ Then /^the '(.*)' radio button should be checked$/ do |name|
   page.should have_selector 'input[type=radio][checked=checked][id=' + name + ']'
 end
 
+Given /^the '(.*)' radio button is checked$/ do |name|
+  page.should have_selector 'input[type=radio][checked=checked][id=' + name + ']'
+end
+
 Given /^my current url is '(.*)'$/ do |path|
   visit(path)
 end

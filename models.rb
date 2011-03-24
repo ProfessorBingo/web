@@ -64,6 +64,13 @@ class Student
   def standard!
     self.permissions = nil
   end
+  def get_permissions
+    if(!self.permissions.nil?)
+      self.permissions
+    else
+      'standard'
+    end
+  end
 end
 
 class School

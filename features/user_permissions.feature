@@ -128,6 +128,7 @@ Feature: Create administrative and moderator users
     When I choose 'admin'
     And I click the 'Edit User' button
     Then 'user' should be an 'admin'
+    And the 'admin' radio button should be checked
     
   Scenario: Admin makes another user a supermod
     Given A user 'admin' exists
@@ -136,10 +137,11 @@ Feature: Create administrative and moderator users
     And I am logged in as 'admin'
     And I am viewing 'Edit User' of 'user'
     And I should not see 'Super Admins have root access'
-    And the 'standard' radio button should be checked
+    And the 'standard' radio button is checked
     When I choose 'supermod'
     And I click the 'Edit User' button
     Then 'user' should be a 'supermod'
+    And the 'supermod' radio button should be checked
     
   Scenario: Admin makes another user a mod
     Given A user 'admin' exists
@@ -148,10 +150,11 @@ Feature: Create administrative and moderator users
     And I am logged in as 'admin'
     And I am viewing 'Edit User' of 'user'
     And I should not see 'Super Admins have root access'
-    And the 'standard' radio button should be checked
+    And the 'standard' radio button is checked
     When I choose 'mod'
     And I click the 'Edit User' button
     Then 'user' should be an 'mod'
+    And the 'mod' radio button should be checked
     
   Scenario: Admin revokes permissions
     Given A user 'admin' exists
@@ -167,6 +170,7 @@ Feature: Create administrative and moderator users
     And 'user' should not be an 'admin'
     And 'user' should not be an 'supermod'
     And 'user' should not be an 'mod'
+    And the 'standard' radio button should be checked
     
   Scenario: SuperAdmin makes another user an admin
     Given A user 'superadmin' exists
@@ -175,10 +179,11 @@ Feature: Create administrative and moderator users
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
     And I am viewing 'Edit User' of 'user'
-    And the 'standard' radio button should be checked
+    And the 'standard' radio button is checked
     When I choose 'admin'
     And I click the 'Edit User' button
     Then 'user' should be a 'admin'
+    And the 'admin' radio button should be checked
     
   Scenario: SuperAdmin makes another user a superadmin
     Given A user 'superadmin' exists
@@ -187,10 +192,11 @@ Feature: Create administrative and moderator users
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
     And I am viewing 'Edit User' of 'user'
-    And the 'standard' radio button should be checked
+    And the 'standard' radio button is checked
     When I choose 'superadmin'
     And I click the 'Edit User' button
     Then 'user' should be a 'superadmin'
+    And the 'superadmin' radio button should be checked
     
   Scenario: SuperAdmin demotes other SuperAdmin
     Given A user 'superadmin' exists
@@ -200,13 +206,14 @@ Feature: Create administrative and moderator users
     And 'superadmin' is a 'superadmin'
     And I am logged in as 'superadmin'
     And I am viewing 'Edit User' of 'user'
-    And the 'superadmin' radio button should be checked
+    And the 'superadmin' radio button is checked
     When I choose 'standard'
     And I click the 'Edit User' button
     Then 'user' should not be an 'superadmin'
     And 'user' should not be an 'admin'
     And 'user' should not be an 'supermod'
     And 'user' should not be an 'mod'
+    And the 'standard' radio button should be checked
     
   Scenario: SuperAdmin tries to demote self
     Given A user 'superadmin' exists

@@ -14,20 +14,21 @@
       %li
         =@user.email
         %input{:type => "hidden", :name => "email", :value => @user.email}
+      - perms = @user.get_permissions  
       - if(params[:user] != session[:user].email)
         %li
           %label{:for => "type"} Type 
           - if(session[:user].superadmin?)
             ="(Super Admins have root access):"
             %br
-            %input{:type => "radio", :id => "superadmin", :name => "type", :value => "superadmin", :checked => @user.superadmin?} Super Admin
+            %input{:type => "radio", :id => "superadmin", :name => "type", :value => "superadmin", :checked => perms == 'superadmin'} Super Admin
           %br
-          %input{:type => "radio", :id => "admin", :name => "type", :value => "admin", :checked => @user.admin?} Admin
+          %input{:type => "radio", :id => "admin", :name => "type", :value => "admin", :checked => perms == 'admin'} Admin
           %br
-          %input{:type => "radio", :id => "supermod", :name => "type", :value => "supermod", :checked => @user.supermod?} Super Moderator
+          %input{:type => "radio", :id => "supermod", :name => "type", :value => "supermod", :checked => perms == 'supermod'} Super Moderator
           %br
-          %input{:type => "radio", :id => "mod", :name => "type", :value => "mod", :checked => @user.mod?} Moderator
+          %input{:type => "radio", :id => "mod", :name => "type", :value => "mod", :checked => perms == 'mod'} Moderator
           %br
-          %input{:type => "radio", :id => "standard", :name => "type", :value => "regular", :checked => !@user.mod?} Standard
+          %input{:type => "radio", :id => "standard", :name => "type", :value => "regular", :checked => perms == 'standard'} Standard
       %li
         %input{:type => "submit", :value => "Edit User"}
