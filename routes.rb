@@ -35,7 +35,17 @@ module Routes
         s.save
         session[:user] = Student.auth(params[:email], params[:password])
         session[:message] = "Registration Successful!"
+        session[:message] += "<a href=\"/validate/#{s.email}/#{s.regcode}/#{s.regtime.to_i}/\">Validate</a>"
         haml :index
+      end
+    end
+    
+    app.get '/validate/:user/:code/:time/?' do
+      s = Student.first(:email => params[:user])
+      if(s.validate!(params[:code], params[:time]))
+        "Valid Code!!!"
+      else
+        "INValid Code!!!"
       end
     end
     

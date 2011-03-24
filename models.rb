@@ -15,9 +15,12 @@ class Student
   property :pwhash,      String, :required => true
   property :mobileauth,  String
   property :permissions, String, :accessor => :protected
+  property :regtime,     Time, :required => true
+  property :valid,       Boolean, :default => false, :required => true
   
   def password=(pass)
     self.pwhash = Student.encrypt(pass, self.email.to_s)
+    self.regtime = Time.now
   end
 
   def self.encrypt(pass, salt)
@@ -35,6 +38,27 @@ class Student
     u = Student.first(:email => login, :pwhash => passhash)
     return nil if u.nil?
     return u
+  end
+  
+  def regcode
+    Digest::SHA1.hexdigest(self.email + self.pwhash)
+  end
+  
+  def available?
+    # Was the account registered more than 3 days ago AND has it NOT been validated
+    ((Time.now.to_i - self.regtime.to_i)/60/60/24 > 3 && !self.valid)
+  end
+  
+  def validate!(code, time_in_seconds)
+    if(self.valid)
+      return true
+    end
+    Time.now
+    if(time_in_seconds.to_i == self.regtime.to_i && code == self.regcode && !self.available?)
+      self.valid = true
+    else
+    end
+    (time_in_seconds.to_i == self.regtime.to_i && code == self.regcode && !self.available?)
   end
   
   def superadmin?

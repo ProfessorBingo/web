@@ -12,3 +12,4 @@ gem 'rspec', :group => :test
 gem 'rest-client', :group => :test
 gem 'factory_girl', :group => :test
 gem 'dm-postgres-adapter', :group => :production
+gem 'pony'
