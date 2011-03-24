@@ -40,12 +40,13 @@ module Routes
       end
     end
     
-    app.get '/validate/:user/:code/:time/?' do
+    app.get '/validate/?:user?/?:code?/?:time?/?' do
       s = Student.first(:email => params[:user])
-      if(s.validate!(params[:code], params[:time]))
-        "Valid Code!!!"
+      if(!s.nil? && s.validate!(params[:code], params[:time]))
+        session[:message] = "Your account is now active! Enjoy!"
+        redirect('/')
       else
-        "INValid Code!!!"
+        haml :validateerror
       end
     end
     

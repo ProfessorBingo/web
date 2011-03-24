@@ -1,0 +1,13 @@
+!!! 5
+%html{:lang => "en"}
+  %head
+    %meta{:content => "text/html; charset=ISO-8859-1", "http-equiv" => "Content-Type"}
+    %title Professor Bingo - Home
+    %link{:href => "css/style.css", :media => "screen", :rel => "stylesheet"}
+  %body
+    =haml :header
+    %h2
+      ="Whoops..."
+    = "Looks like that validation code wasn't right or you registered over 3 days ago. Please make sure the link you clicked was correct. You could always "
+    %a{:title => "Register", :href => "/register", :id => "RegisterLink"}try registering again
+    = "."

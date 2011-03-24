@@ -1,7 +1,6 @@
 .pagenav
   %a{:title => "List users", :id => "ControlPanelListUser", :href => "/controlpanel/users/list/"} List users
-  - if(session[:user].superadmin?)
-    = " - "
-    %a{:title => "Edit a user", :id => "ControlPanelEditUser", :href => "/controlpanel/users/edit/"} Edit a user
+  = " - "
+  %a{:title => "Edit a user", :id => "ControlPanelEditUser", :href => "/controlpanel/users/edit/"} Edit a user
 .action
   =haml("cpanel/#{@page}/#{@action}".to_sym) rescue haml("cpanel/users/list".to_sym)

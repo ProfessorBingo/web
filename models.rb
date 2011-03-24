@@ -51,15 +51,18 @@ class Student
   end
   
   def validate!(code, time_in_seconds)
-    if(self.valid)
+    
+    if(self.valid && time_in_seconds.to_i == self.regtime.to_i && code == self.regcode)
       return true
     end
-    Time.now
     if(time_in_seconds.to_i == self.regtime.to_i && code == self.regcode && !self.available?)
+      pp "User #{self.email} has been validated..."
       self.valid = true
+      self.save
     else
+      return false
     end
-    (time_in_seconds.to_i == self.regtime.to_i && code == self.regcode && !self.available?)
+    return self.valid
   end
   
   def superadmin?
