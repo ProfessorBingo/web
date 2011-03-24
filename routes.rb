@@ -5,6 +5,10 @@ module Routes
       haml :index
     end
     
+    app.get '/css/:file.css' do
+      sass("style/#{params[:file]}".to_sym)
+    end
+    
     app.get '/register/?' do
       if (session[:user])
         redirect '/'
