@@ -42,6 +42,17 @@ Then /^'(.*)' should contain '(.*)'$/ do |field, value|
   find_field(field).value.should == value
 end
 
-Then /^the user '(.*)' should exist$/ do |email|
-  Student.first(:email => email)
+Then /^the user '(.*)' should exist$/ do |user|
+  attrs = Factory.attributes_for(user.to_sym)
+  Student.first(:email => attrs[:email])
+end
+
+Then /^the user '(.*)' should not be valid$/ do |user|
+  attrs = Factory.attributes_for(user.to_sym)
+  Student.first(:email => attrs[:email])
+  def fish(args)
+    
+  end
+  
+  
 end

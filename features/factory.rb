@@ -4,6 +4,14 @@ Factory.define :user, :class => Student do |u|
   u.first_name "Eric"
   u.last_name "Stokes"
   u.password "password"
+  u.valid true
+end
+
+Factory.define :unregistered, :class => Student do |u|
+  u.email "eric@school.edu"
+  u.first_name "Eric"
+  u.last_name "Stokes"
+  u.password "password"
 end
 
 Factory.define :user_two, :class => Student do |u|
@@ -11,6 +19,7 @@ Factory.define :user_two, :class => Student do |u|
   u.first_name "User"
   u.last_name "Two"
   u.password "password"
+  u.valid true
 end
 
 Factory.define :superadmin, :class => Student do |u|
@@ -19,6 +28,7 @@ Factory.define :superadmin, :class => Student do |u|
   u.last_name "Administrator"
   u.password "password"
   u.permissions "superadmin"
+  u.valid true
 end
 
 Factory.define :admin, :class => Student do |u|
@@ -27,6 +37,7 @@ Factory.define :admin, :class => Student do |u|
   u.last_name "istrator"
   u.password "password"
   u.permissions "admin"
+  u.valid true
 end
 
 Factory.define :supermod, :class => Student do |u|
@@ -35,6 +46,7 @@ Factory.define :supermod, :class => Student do |u|
   u.last_name "Moderator"
   u.password "password"
   u.permissions "supermod"
+  u.valid true
 end
 
 Factory.define :mod, :class => Student do |u|
@@ -43,6 +55,7 @@ Factory.define :mod, :class => Student do |u|
   u.last_name "erator"
   u.password "password"
   u.permissions "mod"
+  u.valid true
 end
 
 Factory.define :rose, :class => School do |s|

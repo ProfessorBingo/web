@@ -45,7 +45,9 @@ class ProfBingo < Sinatra::Base
       s.first_name = 'Eric'
       s.password = 'password'
       s.superadmin!
+      s.valid = true
       s.save
+      pp s.valid
     end
     if(Student.first(:email => 'admin').nil?)
       s = Student.new
@@ -54,6 +56,7 @@ class ProfBingo < Sinatra::Base
       s.first_name = 'Eric'
       s.password = 'password'
       s.admin!
+      s.valid = true
       s.save
     end
     if(Student.first(:email => 'supermod').nil?)
@@ -63,6 +66,7 @@ class ProfBingo < Sinatra::Base
       s.first_name = 'Eric'
       s.password = 'password'
       s.supermod!
+      s.valid = true
       s.save
     end
     if(Student.first(:email => 'mod').nil?)
@@ -72,6 +76,7 @@ class ProfBingo < Sinatra::Base
       s.first_name = 'Eric'
       s.password = 'password'
       s.mod!
+      s.valid = true
       s.save
     end
     if(Student.first(:email => 'user').nil?)
@@ -80,6 +85,7 @@ class ProfBingo < Sinatra::Base
       s.last_name = 'Stokes'
       s.first_name = 'Eric'
       s.password = 'password'
+      s.valid = true
       s.save
     end
     enable :static, :session

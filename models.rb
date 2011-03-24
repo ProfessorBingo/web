@@ -30,13 +30,14 @@ class Student
 
   def self.auth(login, pass)
     u = Student.first(:email => login)
-    return nil if u.nil?
+    return nil if(u.nil? || !u.valid)
     return u if Student.encrypt(pass, login) == u.pwhash
   end
   # a more secure auth method where the client has pre hashed the password, Ideally we'd like to do this all the time
   def self.sauth(login, passhash)
     u = Student.first(:email => login, :pwhash => passhash)
-    return nil if u.nil?
+    return nil if(u.nil? || !u.valid)
+    pp "Apparently I didn't return nil..."
     return u
   end
   

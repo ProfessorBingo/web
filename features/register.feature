@@ -13,11 +13,11 @@ Feature: Registration
   Scenario: Enter Information correctly on registration page
     Given I am on the 'register' page
     And I see 'Register for Professor Bingo'
-    And I fill in valid details for 'user'
+    And I fill in valid details for 'unregistered'
     When I click the 'Register' button
-    Then the user 'user' should exist
+    Then the user 'unregistered' should exist
     And I should see 'Registration Successful'
-    
+    And the user 'unregistered' should not be valid
 
   Scenario: Enter Information incorrectly on registration page
     Given I am on the 'register' page

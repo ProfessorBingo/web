@@ -5,3 +5,5 @@
 .hgignore
 *.db
 heroku.log
+cucumber
+irb
