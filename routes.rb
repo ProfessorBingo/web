@@ -130,6 +130,22 @@ module Routes
       end
     end
     
+    app.get '/controlpanel/:page/:action/?' do
+      if(session[:user] && session[:user].admin?)
+        @page = params[:page]
+        @action = params[:action]
+        if(@page == 'schools' && !session[:user].superadmin?)
+          @action = nil
+        end
+        if(@page.nil?)
+          @page = 'home'
+        end
+        haml :controlpanel
+      else
+        redirect '/'
+      end
+    end
+    
     app.get '/controlpanel/?:page?/?' do
       if(session[:user] && session[:user].admin?)
         @page = params[:page]
@@ -144,14 +160,11 @@ module Routes
     
     app.post '/controlpanel/edituser/:user?/?' do
       if(session[:user] && session[:user].admin?)
+        
         validtypes = ['mod', 'supermod', 'admin']
         s = Student.first(:email => params['email'])
-        pp params
-        pp !params['email'].nil?
-        pp params['type'].nil?
+        
         if(!params['email'].nil? && params['type'].nil?)
-          pp "Redirecting..."
-          pp '/controlpanel/edituser/' + params['email'] + '/'
           redirect('/controlpanel/edituser/' + params['email'] + '/')
         end
         

@@ -1,0 +1,17 @@
+%h2
+  ="Add a new School"
+%form{:action => "", :method => "post"}
+  %fieldset
+    %ul
+      %li
+        %label{:for => "name"} School Name:
+        %input{:type => "text", :name => "name"}
+      %li
+        %label{:for => "short"} Abbreviation:
+        %input{:type => "text", :name => "short"}
+      %li
+        %label{:for => "emailext"} Email Extension:
+        %input{:type => "text", :name => "emailext"}
+      %li
+        %input{:type => "submit", :value => "Add New School"}
+        

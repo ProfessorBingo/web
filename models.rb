@@ -70,7 +70,9 @@ class School
   include DataMapper::Resource
   
   property :id,         Serial
-  property :name, String, :required => true
+  property :name,  String, :required => true
+  property :short, String
+  property :emailext,  String, :required => true
 end
 
 class Board

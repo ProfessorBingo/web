@@ -44,3 +44,9 @@ Factory.define :mod, :class => Student do |u|
   u.password "password"
   u.permissions "mod"
 end
+
+Factory.define :rose, :class => School do |s|
+  s.name "Rose-Hulman Institute of Technology"
+  s.short "RHIT"
+  s.emailext "rose-hulman.edu"
+end
