@@ -8,6 +8,7 @@ require 'routes'
 require 'helpers'
 require 'haml'
 require 'json'
+require 'cgi'
 
 class ProfBingo < Sinatra::Base
   

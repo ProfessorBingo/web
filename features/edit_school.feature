@@ -7,7 +7,7 @@ Feature: Edit school
     Given a user 'superadmin' exists
     And I am logged in as 'superadmin'
     And a school 'rose' exists
-    And my current url is '/controlpanel/schools'
+    And my current url is '/controlpanel/school'
     And I see 'Edit a school'
     When I click 'Edit a school'
     Then I should see 'Find a school'
@@ -16,7 +16,7 @@ Feature: Edit school
     Given a user 'superadmin' exists
     And I am logged in as 'superadmin'
     And a school 'rose' exists
-    And my current url is '/controlpanel/schools'
+    And my current url is '/controlpanel/school'
     And I see 'Edit a school'
     When I click school name 'rose'
     Then I should see a School 'rose'

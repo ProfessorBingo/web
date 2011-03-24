@@ -1,9 +1,0 @@
-.pagenav
-  %a{:title => "List schools", :id => "ControlPanelListSchool", :href => "/controlpanel/schools/list/"} List schools
-  - if(session[:user].superadmin?)
-    = " - "
-    %a{:title => "Add a new school", :id => "ControlPanelAddSchool", :href => "/controlpanel/schools/add/"} Add a new school
-    = " - "
-    %a{:title => "Edit a school", :id => "ControlPanelEditSchool", :href => "/controlpanel/schools/edit/"} Edit a school
-.action
-  =haml("cpanel/#{@page}/#{@action}".to_sym) rescue haml("cpanel/schools/list".to_sym)

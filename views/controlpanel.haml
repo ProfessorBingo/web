@@ -14,8 +14,8 @@
       %br
       %a{:title => "CPanelHome", :id => "ControlPanelHome", :href => "/controlpanel/"} Control Panel Home
       %br
-      %a{:title => "Users", :id => "ControlPanelUsers", :href => "/controlpanel/users/"} Users
+      %a{:title => "Users", :id => "ControlPanelUsers", :href => "/controlpanel/user/"} Users
       %br
-      %a{:title => "Schools", :id => "ControlPanelSchools", :href => "/controlpanel/schools/"} Schools
+      %a{:title => "Schools", :id => "ControlPanelSchools", :href => "/controlpanel/school/"} Schools
     .main
       =haml("cpanel/#{@page}".to_sym) rescue redirect "/controlpanel/"

@@ -38,7 +38,7 @@ Given /^[Aa] school '(.*)' exists$/ do |school|
   end
 end
 
-When /^I click school name 'rose'$/ do
+When /^I click school name '(.*)'$/ do |school|
   attrs = Factory.attributes_for(school.to_sym)
   click_on(attrs[:name])
 end

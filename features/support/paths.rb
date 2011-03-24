@@ -21,7 +21,7 @@ module NavigationHelpers
     when /controlpanel/, /Control Panel/i
       '/controlpanel'
     when /Edit User/i
-      '/controlpanel/users/edit/'
+      '/controlpanel/user/edit/'
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

@@ -1,0 +1,6 @@
+.pagenav
+  %a{:title => "List users", :id => "ControlPanelListUser", :href => "/controlpanel/user/list/"} List users
+  = " - "
+  %a{:title => "Edit a user", :id => "ControlPanelEditUser", :href => "/controlpanel/user/edit/"} Edit a user
+.action
+  =haml("cpanel/#{@page}/#{@action}".to_sym) rescue haml("cpanel/user/list".to_sym)

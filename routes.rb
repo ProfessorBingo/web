@@ -116,8 +116,9 @@ module Routes
     end
     
     
-    ### Control Panel Routes ###    
-    app.get '/controlpanel/users/edit/:user/?' do
+    ### Control Panel Routes ###
+    app.get '/controlpanel/user/edit/:user/?' do
+      pp "Using specific user edit GET route"
       if(session[:user] && session[:user].admin?)
         search = Student.all(:email => params[:user]).count
         # TODO: Make an actual searcher, not just exact matches...
@@ -133,21 +134,20 @@ module Routes
           @usersearch = params[:user]
           session[:message] = "User '" + params[:user] + "' was not found, please generalize your search"
         end
-        @page = 'users'
+        @page = 'user'
         @action = 'edit'
         haml :controlpanel
       else
         redirect '/'
       end
     end
-    
-    app.get '/controlpanel/:page/:action/?' do
+
+    app.get '/controlpanel/?:page?/?:action?/?:item?/?' do
+      pp "Using super awesome generic route!"
       if(session[:user] && session[:user].admin?)
         @page = params[:page]
         @action = params[:action]
-        if(@page == 'schools' && !session[:user].superadmin?)
-          @action = nil
-        end
+        @item = params[:item]
         if(@page.nil?)
           @page = 'home'
         end
@@ -156,6 +156,22 @@ module Routes
         redirect '/'
       end
     end
+    
+    # app.get '/controlpanel/:page/:action/?' do
+    #   if(session[:user] && session[:user].admin?)
+    #     @page = params[:page]
+    #     @action = params[:action]
+    #     if(@page == 'school' && !session[:user].superadmin?)
+    #       @action = nil
+    #     end
+    #     if(@page.nil?)
+    #       @page = 'home'
+    #     end
+    #     haml :controlpanel
+    #   else
+    #     redirect '/'
+    #   end
+    # end
     
     app.get '/controlpanel/?:page?/?' do
       if(session[:user] && session[:user].admin?)
@@ -169,12 +185,12 @@ module Routes
       end
     end
     
-    app.post '/controlpanel/schools/add/?' do
+    app.post '/controlpanel/school/add/?' do
       if(session[:user] && session[:user].admin?)
         @name = params['name']
         @short = params['short']
         @emailext = params['emailext']
-        @page = 'schools'
+        @page = 'school'
         @action = 'add'
         if(School.first(:name => params['name']))
           session[:message] = 'That school already exists!'
@@ -184,7 +200,7 @@ module Routes
         elsif(!params['name'].nil? && params['name'] != "")
           School.create(:name => params['name'], :short => params['short'], :emailext => params['emailext'])
           session[:message] = 'School added successfully!'
-          redirect('/controlpanel/schools/')
+          redirect('/controlpanel/school/')
         else
           session[:message] = 'You need to enter a school name!'
         end
@@ -194,14 +210,14 @@ module Routes
       end
     end
     
-    app.post '/controlpanel/users/edit/:user?/?' do
+    app.post '/controlpanel/user/edit/:user?/?' do
       if(session[:user] && session[:user].admin?)
         
         validtypes = ['mod', 'supermod', 'admin']
         s = Student.first(:email => params['email'])
         
         if(!params['email'].nil? && params['type'].nil?)
-          redirect('/controlpanel/users/edit/' + params['email'] + '/')
+          redirect('/controlpanel/user/edit/' + params['email'] + '/')
         end
         
         # Make sure the user is not trying to change their own permissions
@@ -222,7 +238,7 @@ module Routes
           session[:message] = 'Error: You cannot demote yourself!'
         end
         @user = Student.first(:email => params['email'])
-        @page = 'users'
+        @page = 'user'
         @action = 'edit'
         haml :controlpanel
       else

@@ -23,7 +23,7 @@ Feature: Add School
   Scenario: Add a new school with valid details
     Given a user 'superadmin' exists
     And I am logged in as 'superadmin'
-    And my current url is '/controlpanel/schools/add/'
+    And my current url is '/controlpanel/school/add/'
     And I see 'School Name'
     When I fill in the same 'name' as 'rose' into 'name'
     And I fill in the same 'short' as 'rose' into 'short'
@@ -34,7 +34,7 @@ Feature: Add School
   Scenario: Add a new school with invalid details
     Given a user 'superadmin' exists
     And I am logged in as 'superadmin'
-    And my current url is '/controlpanel/schools/add/'
+    And my current url is '/controlpanel/school/add/'
     And I see 'School Name'
     And I click the 'Add New School' button
     Then I should see 'You need to enter a school name!'
@@ -43,7 +43,7 @@ Feature: Add School
     Given a user 'superadmin' exists
     And a school 'rose' exists
     And I am logged in as 'superadmin'
-    And my current url is '/controlpanel/schools/add/'
+    And my current url is '/controlpanel/school/add/'
     And I see 'School Name'
     When I fill in the same 'name' as 'rose' into 'name'
     And I click the 'Add New School' button
@@ -53,7 +53,7 @@ Feature: Add School
     Given a user 'superadmin' exists
     And a school 'rose' exists
     And I am logged in as 'superadmin'
-    And my current url is '/controlpanel/schools/add/'
+    And my current url is '/controlpanel/school/add/'
     And I see 'School Name'
     When I fill in the same 'emailext' as 'rose' into 'emailext'
     And I fill in 'New School' for 'name'
