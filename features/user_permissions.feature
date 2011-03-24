@@ -93,7 +93,7 @@ Feature: Create administrative and moderator users
     And I am logged in as 'admin'
     And I am on 'Control Panel'
     When I click 'Users'
-    Then I should see 'Edit User'
+    Then I should see 'Edit a user'
     And I should see 'Listing of users'
 
   Scenario: Admin searches for a user unsuccessfully
