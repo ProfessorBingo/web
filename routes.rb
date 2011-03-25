@@ -126,9 +126,13 @@ module Routes
       if(session[:user] && session[:user].admin?)
         usersearch = params[:user].gsub("*", "%")
         if(session[:user].superadmin?)
+          pp "The user is a superadmin"
           search = Student.all(:email.like => usersearch)
         else
+          pp "The user is not a superadmin - filtering results..."
           search = Student.all(:email.like => usersearch, :permissions.not => 'superadmin')
+          pp usersearch
+          pp search
         end
         # TODO: Make an actual searcher, not just exact matches...
         if(params[:user] == session[:user].email)

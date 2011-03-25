@@ -7,6 +7,7 @@ require 'models'
 require 'routes'
 require 'helpers'
 require 'haml'
+require 'sass'
 require 'json'
 require 'cgi'
 

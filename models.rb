@@ -14,7 +14,7 @@ class Student
   property :email,       String, :required => true
   property :pwhash,      String, :required => true
   property :mobileauth,  String
-  property :permissions, String, :accessor => :protected
+  property :permissions, String, :accessor => :protected, :required => true, :default => 'standard'
   property :regtime,     Time, :required => true
   property :valid,       Boolean, :default => false, :required => true
   
