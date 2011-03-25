@@ -90,7 +90,7 @@ class Student
     self.permissions = "mod"
   end
   def standard!
-    self.permissions = nil
+    self.permissions = "standard"
   end
   def get_permissions
     if(!self.permissions.nil?)
