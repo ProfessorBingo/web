@@ -1,3 +1,6 @@
 %h3
   ="Listing of users:"
-  
+- Student.all.each do |user|
+  - if((session[:user].superadmin? && user.superadmin?) || (!user.superadmin?))
+    %br
+    %a{:title => "Edit #{user.email}", :href => "/controlpanel/user/edit/#{CGI::escape(user.email)}"} #{user.email}

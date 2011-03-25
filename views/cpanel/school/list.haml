@@ -1,9 +1,8 @@
 %h3
   ="Listing of schools:"
-  - School.all.each do |school|
-    %br
-    - if(session[:user].superadmin?)
-      %a{:title => "Edit #{school.name}", :href => "/controlpanel/school/edit/#{CGI::escape(school.name)}"} 
-        =school.name
-    - else
-      =school.name
+- School.all.each do |school|
+  %br
+  - if(session[:user].superadmin?)
+    %a{:title => "Edit #{school.name}", :href => "/controlpanel/school/edit/#{CGI::escape(school.name)}"} #{school.name}
+  - else
+    =school.name
