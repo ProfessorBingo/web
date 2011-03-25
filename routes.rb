@@ -124,15 +124,26 @@ module Routes
     app.get '/controlpanel/user/edit/:user/?' do
       pp "Using specific user edit GET route"
       if(session[:user] && session[:user].admin?)
-        search = Student.all(:email => params[:user]).count
+        usersearch = params[:user].gsub("*", "%")
+        if(session[:user].superadmin?)
+          search = Student.all(:email.like => usersearch)
+        else
+          search = Student.all(:email.like => usersearch, :permissions.not => 'superadmin')
+        end
         # TODO: Make an actual searcher, not just exact matches...
         if(params[:user] == session[:user].email)
           session[:message] = "This is you!"
         end
-        if(search == 1)
-          @user = Student.first(:email => params[:user])
-        elsif(search > 1)
+        if(search.count == 1)
+          if(search[0].email != usersearch)
+            redirect("/controlpanel/user/edit/#{search[0].email}")
+          else
+            @user = search[0]
+          end
+          
+        elsif(search.count > 1)
           @usersearch = params[:user]
+          @users = search
           session[:message] = "More than one user found"
         else
           @usersearch = params[:user]
@@ -152,34 +163,6 @@ module Routes
         @page = params[:page]
         @action = params[:action]
         @item = params[:item]
-        if(@page.nil?)
-          @page = 'home'
-        end
-        haml :controlpanel
-      else
-        redirect '/'
-      end
-    end
-    
-    # app.get '/controlpanel/:page/:action/?' do
-    #   if(session[:user] && session[:user].admin?)
-    #     @page = params[:page]
-    #     @action = params[:action]
-    #     if(@page == 'school' && !session[:user].superadmin?)
-    #       @action = nil
-    #     end
-    #     if(@page.nil?)
-    #       @page = 'home'
-    #     end
-    #     haml :controlpanel
-    #   else
-    #     redirect '/'
-    #   end
-    # end
-    
-    app.get '/controlpanel/?:page?/?' do
-      if(session[:user] && session[:user].admin?)
-        @page = params[:page]
         if(@page.nil?)
           @page = 'home'
         end
@@ -218,12 +201,17 @@ module Routes
       if(session[:user] && session[:user].admin?)
         
         validtypes = ['mod', 'supermod', 'admin']
-        s = Student.first(:email => params['email'])
         
         if(!params['email'].nil? && params['type'].nil?)
+          usersearch = params['email'].gsub("*", "%")
+          if(Student.all(:email.like => usersearch).count == 1)
+            pp "Search: #{usersearch}"
+            pp Student.all(:email.like => usersearch)
+            params['email'] = Student.first(:email.like => usersearch).email
+          end
           redirect('/controlpanel/user/edit/' + params['email'] + '/')
         end
-        
+        s = Student.first(:email => params['email'])
         # Make sure the user is not trying to change their own permissions
         if(session[:user] != s && !s.nil?)
           # Extra check to make sure no one has messed with post vars for superadmins
