@@ -1,6 +1,6 @@
 require 'factory_girl'
 Factory.define :user, :class => Student do |u|
-  u.email "eric@school.edu"
+  u.email "user@school.edu"
   u.first_name "Eric"
   u.last_name "Stokes"
   u.password "password"
@@ -8,7 +8,7 @@ Factory.define :user, :class => Student do |u|
 end
 
 Factory.define :unregistered, :class => Student do |u|
-  u.email "eric@school.edu"
+  u.email "unregistered@school.edu"
   u.first_name "Eric"
   u.last_name "Stokes"
   u.password "password"
@@ -41,7 +41,7 @@ Factory.define :admin, :class => Student do |u|
 end
 
 Factory.define :supermod, :class => Student do |u|
-  u.email "mod@school.edu"
+  u.email "supermod@school.edu"
   u.first_name "Super"
   u.last_name "Moderator"
   u.password "password"

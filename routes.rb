@@ -226,7 +226,17 @@ module Routes
           else
             s.standard!
           end
+          pp "Saving user details..."
+          s.email = params['email']
+          s.first_name = params['first_name']
+          s.last_name = params['last_name']
+          s.valid = !params['valid'].nil?
+          # Password reset request recieved
+          if(!params['valid'].nil?)
+            pp "I should change the pw now..."
+          end
           s.save
+          session[:message] = 'User successfully edited!'
         elsif(s.nil?)
           session[:message] = 'Error: You must enter a valid user!'
           @usersearch = params['email']
