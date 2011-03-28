@@ -20,7 +20,7 @@
         %label{:for => "last_name"} Last Name:
         %input{:type => "text", :name => "last_name", :value => @user.last_name}
       - perms = @user.get_permissions  
-      - if(params[:user] != session[:user].email)
+      - if(@user.id != session[:user].id)
         %li
           %label{:for => "type"} Type 
           - if(session[:user].superadmin?)
@@ -35,6 +35,8 @@
           %input{:type => "radio", :id => "mod", :name => "type", :value => "mod", :checked => perms == 'mod'} Moderator
           %br
           %input{:type => "radio", :id => "standard", :name => "type", :value => "regular", :checked => perms == 'standard'} Standard
+      - else
+        %input{:type => "hidden", :id => perms, :name => "type", :value => perms}
       %li
         %label{:for => "valid"} User Is Valid: 
         %input{:type => "checkbox", :id => "valid", :name => "valid", :checked => @user.item_enabled}

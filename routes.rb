@@ -136,7 +136,7 @@ module Routes
           pp usersearch
           pp search
         end
-        if(params[:user] == session[:user].email)
+        if(search[0].id == session[:user].id)
           session[:message] = "This is you!"
         end
         if(search.count == 1)
@@ -234,6 +234,7 @@ module Routes
     end
 
     app.post '/controlpanel/user/edit/:user?/?' do
+      session[:message] = ""
       if(session[:user] && session[:user].admin?)
         validtypes = ['mod', 'supermod', 'admin']
         if(params['studentid'].nil?)
@@ -248,14 +249,18 @@ module Routes
         s = Student.first(:id => params['studentid'])
         old_student_email = s.email
         # Make sure the user is not trying to change their own permissions
-        if(session[:user] != s && !s.nil?)
+        if(s)
           # Extra check to make sure no one has messed with post vars for superadmins
-          if(params['type'] == 'superadmin' && session[:user].superadmin?)
-            s.superadmin!
-          elsif(validtypes.include?(params['type']))
-            s.send(params['type'] + "!")
-          else
-            s.standard!
+          if(session[:user] != s)
+            if(params['type'] == 'superadmin' && session[:user].superadmin?)
+              s.superadmin!
+            elsif(validtypes.include?(params['type']))
+              s.send(params['type'] + "!")
+            else
+              s.standard!
+            end
+          elsif(params['type'] != s.get_permissions)
+            session[:message] << "You cannot change your own permissions!<br />"
           end
           pp "Saving user details..."
           s.email = params['email']
@@ -269,24 +274,26 @@ module Routes
           # if there are no super admins, then a large problem has arisen.
           # Forbid saving of any further users because something is wrong.
           if(Student.first(:permissions => 'superadmin').nil?)
-            session[:message] = 'Error: Could not save user'
+            session[:message] << 'Error: Could not save user'
           elsif(s.save)
-            session[:message] = 'User successfully edited!'
+            session[:message] << 'User successfully edited!'
+            if(s.id == session[:user].id) 
+              session[:user] = s
+            end
             if(s.email != old_student_email)
               redirect("/controlpanel/user/edit/#{s.url_safe_email}/")
             end
           else
-            my_account.errors.each do |e|
-              session[:message] += e
+            session[:message] = "Error(s): "
+            s.errors.each do |e|
+              session[:message] << e.to_s + "<br />"
             end
           end
-        elsif(s.nil?)
+        else
           session[:message] = 'Error: You must enter a valid user!'
           @usersearch = params['email']
-        else
-          session[:message] = 'Error: You cannot demote yourself!'
         end
-        @user = Student.first(:email => params['email'])
+        @user = Student.first(:id => params['studentid'])
         @page = 'user'
         @action = 'edit'
         haml :controlpanel

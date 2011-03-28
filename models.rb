@@ -9,9 +9,16 @@ class Student
   include DataMapper::Resource
   
   property :id,          Serial
-  property :first_name,  String, :required => true
-  property :last_name,   String, :required => true
-  property :email,       String, :required => true
+  property :first_name,  String, :required => true, :messages => { :presence  => 'A First Name is required.' }
+  property :last_name,   String, :required => true, :messages => { :presence  => 'A Last Name address is required.' }
+  property :email,       String, :required => true, :unique => true,
+  # line commented out for personal testing
+  #:format => :email_address,
+  :messages => {
+        :presence  => 'An email address is required.',
+        :is_unique => 'That school name is already taken.',
+        :format => 'Please make sure you entered your email address as `xxxxx@xxxx.xxx`.'
+      }
   property :pwhash,      String, :required => true
   property :mobileauth,  String
   property :permissions, String, :accessor => :protected, :required => true, :default => 'standard'
