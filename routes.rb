@@ -1,14 +1,14 @@
 module Routes
   def self.included( app )
-    
+
     app.get '/' do
       haml :index
     end
-    
+
     app.get '/css/:file.css' do
       sass("style/#{params[:file]}".to_sym)
     end
-    
+
     app.get '/register/?' do
       if (session[:user])
         redirect '/'
@@ -16,7 +16,7 @@ module Routes
         haml :register
       end
     end
-    
+
     app.post '/register/?' do
       if (session[:user])
         redirect '/'
@@ -43,7 +43,7 @@ module Routes
         haml :index
       end
     end
-    
+
     app.get '/validate/?:user?/?:code?/?:time?/?' do
       s = Student.first(:email => params[:user])
       if(!s.nil? && s.validate!(params[:code], params[:time]))
@@ -53,11 +53,11 @@ module Routes
         haml :validateerror
       end
     end
-    
+
     app.get '/login/?' do
       haml :login
     end
-    
+
     app.post '/login/?' do
       session[:user] = Student.auth(params[:email], params[:password])
 
@@ -83,12 +83,12 @@ module Routes
         haml :login
       end
     end
-    
+
     app.get '/logout/?' do
       session[:user] = nil
       redirect '/'
     end
-    
+
     app.post '/logout/?' do
       if(params[:data])
         itemhash = JSON.parse(params[:data])
@@ -101,7 +101,7 @@ module Routes
           content_type :json
           { :data => {:result => 'FAIL'}}.to_json
         end
-        
+
       end
     end
     # Look into ways of refactoring this and logout, only 1 line difference
@@ -118,9 +118,11 @@ module Routes
         end
       end
     end
-    
-    
+
+
     ### Control Panel Routes ###
+
+    ## Search for user route
     app.get '/controlpanel/user/edit/:user/?' do
       pp "Using specific user edit GET route"
       if(session[:user] && session[:user].admin?)
@@ -134,7 +136,6 @@ module Routes
           pp usersearch
           pp search
         end
-        # TODO: Make an actual searcher, not just exact matches...
         if(params[:user] == session[:user].email)
           session[:message] = "This is you!"
         end
@@ -144,7 +145,7 @@ module Routes
           else
             @user = search[0]
           end
-          
+
         elsif(search.count > 1)
           @usersearch = params[:user]
           @users = search
@@ -154,6 +155,37 @@ module Routes
           session[:message] = "User '" + params[:user] + "' was not found, please generalize your search"
         end
         @page = 'user'
+        @action = 'edit'
+        haml :controlpanel
+      else
+        redirect '/'
+      end
+    end
+
+    app.get '/controlpanel/school/edit/:school/?' do
+      pp "Using specific school edit GET route"
+      if(session[:user] && session[:user].admin?)
+        schoolsearch = params[:school].gsub("*", "%")
+        search = School.all(:name.like => schoolsearch)
+
+        if(search.count == 1)
+          if(search[0].name != schoolsearch)
+            # We only found one result, but the pattern matching is not the full name
+            # So, we send the user to the correct page because only one result was returned
+            redirect("/controlpanel/school/edit/#{search[0].name}")
+          else
+            @school = search[0]
+          end
+
+        elsif(search.count > 1)
+          @schoolsearch = params[:school]
+          @schools = search
+          session[:message] = "More than one school found"
+        else
+          @schoolsearch = params[:school]
+          session[:message] = "School '" + params[:school] + "' was not found, please generalize your search"
+        end
+        @page = 'school'
         @action = 'edit'
         haml :controlpanel
       else
@@ -175,7 +207,7 @@ module Routes
         redirect '/'
       end
     end
-    
+
     app.post '/controlpanel/school/add/?' do
       if(session[:user] && session[:user].admin?)
         @name = params['name']
@@ -190,7 +222,7 @@ module Routes
           session[:message] = "That email extension already exists (#{name})!"
         elsif(!params['name'].nil? && params['name'] != "")
           School.create(:name => params['name'], :short => params['short'], :emailext => params['emailext'])
-          session[:message] = 'School added successfully!'
+          session[:message] = 'School added successfully! (You will need to enable it for it to show up to public users!)'
           redirect('/controlpanel/school/')
         else
           session[:message] = 'You need to enter a school name!'
@@ -200,13 +232,11 @@ module Routes
         redirect('/')
       end
     end
-    
+
     app.post '/controlpanel/user/edit/:user?/?' do
       if(session[:user] && session[:user].admin?)
-        
         validtypes = ['mod', 'supermod', 'admin']
-        
-        if(!params['email'].nil? && params['type'].nil?)
+        if(params['studentid'].nil?)
           usersearch = params['email'].gsub("*", "%")
           if(Student.all(:email.like => usersearch).count == 1)
             pp "Search: #{usersearch}"
@@ -215,7 +245,8 @@ module Routes
           end
           redirect('/controlpanel/user/edit/' + params['email'] + '/')
         end
-        s = Student.first(:email => params['email'])
+        s = Student.first(:id => params['studentid'])
+        old_student_email = s.email
         # Make sure the user is not trying to change their own permissions
         if(session[:user] != s && !s.nil?)
           # Extra check to make sure no one has messed with post vars for superadmins
@@ -230,13 +261,25 @@ module Routes
           s.email = params['email']
           s.first_name = params['first_name']
           s.last_name = params['last_name']
-          s.valid = !params['valid'].nil?
+          s.item_enabled = !params['valid'].nil?
           # Password reset request recieved
           if(!params['valid'].nil?)
             pp "I should change the pw now..."
           end
-          s.save
-          session[:message] = 'User successfully edited!'
+          # if there are no super admins, then a large problem has arisen.
+          # Forbid saving of any further users because something is wrong.
+          if(Student.first(:permissions => 'superadmin').nil?)
+            session[:message] = 'Error: Could not save user'
+          elsif(s.save)
+            session[:message] = 'User successfully edited!'
+            if(s.email != old_student_email)
+              redirect("/controlpanel/user/edit/#{s.url_safe_email}/")
+            end
+          else
+            my_account.errors.each do |e|
+              session[:message] += e
+            end
+          end
         elsif(s.nil?)
           session[:message] = 'Error: You must enter a valid user!'
           @usersearch = params['email']
@@ -251,6 +294,46 @@ module Routes
         redirect '/'
       end
     end
-    
+
+    app.post '/controlpanel/school/edit/:school?/?' do
+      if(session[:user] && session[:user].admin?)
+
+        if(params['schoolid'].nil?)
+          schoolsearch = params['name'].gsub("*", "%")
+          if(School.all(:name.like => schoolsearch).count == 1)
+            pp "Search: #{schoolsearch}"
+            pp School.all(:name.like => schoolsearch)
+            params['name'] = School.first(:name.like => schoolsearch).name
+          end
+          redirect("/controlpanel/school/edit/#{params['name']}/")
+        end
+        s = School.first(:id => params['schoolid'])
+        old_school_name = s.name
+        # Make sure the school actually exists
+        if(!s.nil?)
+          pp "Saving school details..."
+          s.name = params['name']
+          s.short = params['short']
+          s.emailext = params['emailext']
+          s.item_enabled = !params['valid'].nil?
+          # Password reset request recieved
+          s.save
+
+          session[:message] = 'School successfully edited!'
+          if(s.name != old_school_name)
+            redirect("/controlpanel/school/edit/#{s.url_safe_name}/")
+          end
+        else
+          session[:message] = 'Error: You must enter a valid school!'
+          @schoolsearch = params['name']
+        end
+        @school = School.first(:name => params['name'])
+        @page = 'school'
+        @action = 'edit'
+        haml :controlpanel
+      else
+        redirect '/'
+      end
+    end
   end
 end

@@ -16,7 +16,7 @@ class Student
   property :mobileauth,  String
   property :permissions, String, :accessor => :protected, :required => true, :default => 'standard'
   property :regtime,     Time, :required => true
-  property :valid,       Boolean, :default => false, :required => true
+  property :item_enabled,Boolean, :default => false, :required => true
   
   def password=(pass)
     self.pwhash = Student.encrypt(pass, self.email.to_s)
@@ -30,13 +30,13 @@ class Student
 
   def self.auth(login, pass)
     u = Student.first(:email => login)
-    return nil if(u.nil? || !u.valid)
+    return nil if(u.nil? || !u.item_enabled)
     return u if Student.encrypt(pass, login) == u.pwhash
   end
   # a more secure auth method where the client has pre hashed the password, Ideally we'd like to do this all the time
   def self.sauth(login, passhash)
     u = Student.first(:email => login, :pwhash => passhash)
-    return nil if(u.nil? || !u.valid)
+    return nil if(u.nil? || !u.item_enabled)
     pp "Apparently I didn't return nil..."
     return u
   end
@@ -47,22 +47,22 @@ class Student
   
   def available?
     # Was the account registered more than 3 days ago AND has it NOT been validated
-    ((Time.now.to_i - self.regtime.to_i)/60/60/24 > 3 && !self.valid)
+    ((Time.now.to_i - self.regtime.to_i)/60/60/24 > 3 && !self.item_enabled)
   end
   
   def validate!(code, time_in_seconds)
     
-    if(self.valid && time_in_seconds.to_i == self.regtime.to_i && code == self.regcode)
+    if(self.item_enabled && time_in_seconds.to_i == self.regtime.to_i && code == self.regcode)
       return true
     end
     if(time_in_seconds.to_i == self.regtime.to_i && code == self.regcode && !self.available?)
       pp "User #{self.email} has been validated..."
-      self.valid = true
+      self.item_enabled = true
       self.save
     else
       return false
     end
-    return self.valid
+    return self.item_enabled
   end
   
   def superadmin?
@@ -99,15 +99,27 @@ class Student
       'standard'
     end
   end
+  def url_safe_email
+    CGI::escape(self.email)
+  end
 end
 
 class School
   include DataMapper::Resource
   
   property :id,         Serial
-  property :name,  String, :required => true
+  property :name, String, :required => true, :unique => true, 
+  :messages => {
+        :presence  => 'A school name is required.',
+        :is_unique => 'That school name is already taken.'
+      }
   property :short, String
   property :emailext,  String, :required => true
+  property :item_enabled,       Boolean, :default => false, :required => true
+  
+  def url_safe_name
+    CGI::escape(self.name)
+  end
 end
 
 class Board

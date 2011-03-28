@@ -3,6 +3,6 @@
 - School.all.each do |school|
   %br
   - if(session[:user].superadmin?)
-    %a{:title => "Edit #{school.name}", :href => "/controlpanel/school/edit/#{CGI::escape(school.name)}"} #{school.name}
+    %a{:title => "Edit #{school.name}", :href => "/controlpanel/school/edit/#{school.url_safe_name}"} #{school.name}
   - else
     ="#{school.name}"

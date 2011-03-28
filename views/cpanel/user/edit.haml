@@ -37,10 +37,11 @@
           %input{:type => "radio", :id => "standard", :name => "type", :value => "regular", :checked => perms == 'standard'} Standard
       %li
         %label{:for => "valid"} User Is Valid: 
-        %input{:type => "checkbox", :id => "valid", :name => "valid", :checked => @user.valid}
+        %input{:type => "checkbox", :id => "valid", :name => "valid", :checked => @user.item_enabled}
       %li
         %label{:for => "resetpw"} Reset Password (DOES NOTHING RIGHT NOW): 
         %input{:type => "checkbox", :id => "resetpw", :name => "resetpw"}
+        %input{:type => "hidden", :id => "studentid", :name => "studentid", :value => @user.id}
       %li
         %input{:type => "submit", :value => "Edit User"}
   - if(!@users.nil?)

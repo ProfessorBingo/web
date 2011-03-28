@@ -40,6 +40,8 @@ GEM
     dm-sqlite-adapter (1.1.0)
       dm-do-adapter (~> 1.1.0)
       do_sqlite3 (~> 0.10.2)
+    dm-validations (1.1.0)
+      dm-core (~> 1.1.0)
     do_postgres (0.10.3)
       data_objects (= 0.10.3)
     do_sqlite3 (0.10.3)
@@ -108,6 +110,7 @@ DEPENDENCIES
   dm-migrations
   dm-postgres-adapter
   dm-sqlite-adapter
+  dm-validations
   factory_girl
   haml
   json (~> 1.4.6)
