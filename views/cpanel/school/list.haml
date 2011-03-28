@@ -5,4 +5,4 @@
   - if(session[:user].superadmin?)
     %a{:title => "Edit #{school.name}", :href => "/controlpanel/school/edit/#{CGI::escape(school.name)}"} #{school.name}
   - else
-    =school.name
+    ="#{school.name}"

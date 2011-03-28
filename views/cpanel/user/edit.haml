@@ -4,12 +4,7 @@
   %fieldset
     %ul
     - if(!@user)
-      = "Find a user to edit"
-      %li
-        %label{:for => "email"} Email Address:
-        %input{:type => "text", :name => "email", :value => @usersearch}
-      %li
-        %input{:type => "submit", :value => "Find User"}
+      =haml 'cpanel/user/find'.to_sym
     - else
       %li
         - if(session[:user].superadmin?)

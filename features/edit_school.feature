@@ -17,6 +17,7 @@ Feature: Edit school
     And I am logged in as 'superadmin'
     And a school 'rose' exists
     And my current url is '/controlpanel/school'
+    And I want to see what is happening
     And I see 'Edit a school'
     When I click school name 'rose'
     Then I should see a School 'rose'

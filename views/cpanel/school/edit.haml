@@ -1,0 +1,51 @@
+- pp "Found edit.haml"
+%h3
+  ="Edit School"
+%form{:action => "", :method => "post"}
+  %fieldset
+    %ul
+    - if(!@school)
+      =haml 'cpanel/school/find'.to_sym
+    - else
+      %li
+        - if(session[:user].superadmin?)
+          %label{:for => "email"} Email Address:
+          %input{:type => "text", :name => "email", :value => @user.email}
+        - else
+          =@user.email
+          %input{:type => "hidden", :name => "email", :value => @user.email}
+      %li
+        %label{:for => "first_name"} First Name:
+        %input{:type => "text", :name => "first_name", :value => @user.first_name}
+      %li
+        %label{:for => "last_name"} Last Name:
+        %input{:type => "text", :name => "last_name", :value => @user.last_name}
+      - perms = @user.get_permissions  
+      - if(params[:user] != session[:user].email)
+        %li
+          %label{:for => "type"} Type 
+          - if(session[:user].superadmin?)
+            ="(Super Admins have root access):"
+            %br
+            %input{:type => "radio", :id => "superadmin", :name => "type", :value => "superadmin", :checked => perms == 'superadmin'} Super Admin
+          %br
+          %input{:type => "radio", :id => "admin", :name => "type", :value => "admin", :checked => perms == 'admin'} Admin
+          %br
+          %input{:type => "radio", :id => "supermod", :name => "type", :value => "supermod", :checked => perms == 'supermod'} Super Moderator
+          %br
+          %input{:type => "radio", :id => "mod", :name => "type", :value => "mod", :checked => perms == 'mod'} Moderator
+          %br
+          %input{:type => "radio", :id => "standard", :name => "type", :value => "regular", :checked => perms == 'standard'} Standard
+      %li
+        %label{:for => "valid"} User Is Valid: 
+        %input{:type => "checkbox", :id => "valid", :name => "valid", :checked => @user.valid}
+      %li
+        %label{:for => "resetpw"} Reset Password (DOES NOTHING RIGHT NOW): 
+        %input{:type => "checkbox", :id => "resetpw", :name => "resetpw"}
+      %li
+        %input{:type => "submit", :value => "Edit User"}
+  - if(!@users.nil?)
+    - @users.each do |user|
+      %a{:title => "#{user.email}", :href => "/controlpanel/user/edit/#{user.email}"}
+        =user.email
+      %br

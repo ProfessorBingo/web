@@ -1,10 +1,7 @@
-%h2
-  ="Find a school"
-%form{:action => "", :method => "post"}
-  %fieldset
-    %ul
-      %li
-        %label{:for => "email"} Email Address:
-        %input{:type => "text", :name => "email", :value => @usersearch}
-      %li
-        %input{:type => "submit", :value => "Find User"}
+%strong
+  = "Find a school to edit"
+%li
+  %label{:for => "name"} School Name:
+  %input{:type => "text", :name => "name", :value => @schoolsearch}
+%li
+  %input{:type => "submit", :value => "Find School"}
