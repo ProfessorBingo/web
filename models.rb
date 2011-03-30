@@ -43,6 +43,9 @@ class Student
   # a more secure auth method where the client has pre hashed the password, Ideally we'd like to do this all the time
   def self.sauth(login, passhash)
     u = Student.first(:email => login, :pwhash => passhash)
+    pp u
+    pp login
+    pp passhash
     return nil if(u.nil? || !u.item_enabled)
     pp "Apparently I didn't return nil..."
     return u
@@ -120,8 +123,12 @@ class School
         :presence  => 'A school name is required.',
         :is_unique => 'That school name is already taken.'
       }
-  property :short, String
-  property :emailext,  String, :required => true
+  property :short, String, :required => true
+  property :emailext,  String, :required => true, :unique => true,
+  :messages => {
+        :presence  => 'You must enter an email extension for this school',
+        :is_unique => "That school name is already taken."
+      }
   property :item_enabled,       Boolean, :default => false, :required => true
   
   def url_safe_name

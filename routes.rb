@@ -69,12 +69,13 @@ module Routes
         credentials = JSON.parse(jdata)
         if(Student.sauth(credentials["email"], credentials["password"]))
           authgenstring = credentials["password"] + credentials["email"] + Time.now.to_s
-          s = Student.first(credentials["email"])
+          s = Student.first(:email => credentials["email"])
           authcode = Digest::SHA1.hexdigest(authgenstring)
           s.update(:mobileauth => authcode)
           content_type :json
           { :data => {:result => 'Success', :authcode => authcode}}.to_json
         else
+          pp "User Authed Incorrectly"
           content_type :json
           { :data => {:result => 'FAIL'}}.to_json
         end
@@ -109,7 +110,7 @@ module Routes
       if(params[:data])
         itemhash = JSON.parse(params[:data])
         s = Student.first(:mobileauth => itemhash['authcode'])
-        if(s && itemhash['authcode'] != '')
+        if(s && itemhash['authcode'] != '' && itemhash['authcode'])
           content_type :json
           { :data => {:result => 'Success'}}.to_json
         else
@@ -215,15 +216,21 @@ module Routes
         @emailext = params['emailext']
         @page = 'school'
         @action = 'add'
+        s = School.create(:name => params['name'], :short => params['short'], :emailext => params['emailext'])
+        if(s.save)
+          pp School.all
+          session[:message] = 'School added successfully! (You will need to enable it for it to show up to public users!)'
+          redirect('/controlpanel/school/')
+        else
+          
+        end
         if(School.first(:name => params['name']))
           session[:message] = 'That school already exists!'
         elsif(School.first(:emailext => params['emailext']))
           name = School.first(:emailext => params['emailext']).name
           session[:message] = "That email extension already exists (#{name})!"
         elsif(!params['name'].nil? && params['name'] != "")
-          School.create(:name => params['name'], :short => params['short'], :emailext => params['emailext'])
-          session[:message] = 'School added successfully! (You will need to enable it for it to show up to public users!)'
-          redirect('/controlpanel/school/')
+          
         else
           session[:message] = 'You need to enter a school name!'
         end
@@ -324,17 +331,22 @@ module Routes
           s.emailext = params['emailext']
           s.item_enabled = !params['valid'].nil?
           # Password reset request recieved
-          s.save
-
-          session[:message] = 'School successfully edited!'
-          if(s.name != old_school_name)
-            redirect("/controlpanel/school/edit/#{s.url_safe_name}/")
+          if(s.save)
+            session[:message] = 'School successfully edited!'
+            if(s.name != old_school_name)
+              redirect("/controlpanel/school/edit/#{s.url_safe_name}/")
+            end
+          else
+            session[:message] = "Error(s): "
+            s.errors.each do |e|
+              session[:message] << e.to_s + "<br />"
+            end
           end
         else
           session[:message] = 'Error: You must enter a valid school!'
           @schoolsearch = params['name']
         end
-        @school = School.first(:name => params['name'])
+        @school = School.first(:id => params['schoolid'])
         @page = 'school'
         @action = 'edit'
         haml :controlpanel
