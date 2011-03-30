@@ -90,6 +90,15 @@ class ProfBingo < Sinatra::Base
       s.item_enabled = true
       s.save
     end
+    if(Student.first(:email => 'u').nil?)
+      s = Student.new
+      s.email = 'u'
+      s.last_name = 'JD'
+      s.first_name = 'Hill'
+      s.password = 'p'
+      s.item_enabled = true
+      s.save
+    end
     enable :static, :session
     set :root, File.dirname(__FILE__)
 
