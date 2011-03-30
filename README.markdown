@@ -66,7 +66,6 @@ __Note:__ This condition will occur if an _authcode_ has already been logged out
     }
 
 ##Register##
-###NOT YET IMPLEMENTED###
 ###URL: /register###
 The JSON object should be posted in 'data' as follows:
 

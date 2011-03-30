@@ -21,7 +21,29 @@ module Routes
       if (session[:user])
         redirect '/'
       elsif(params[:data])
-        
+        credentials = JSON.parse(params[:data])
+        s = Student.new
+        s.email = credentials["email"]
+        s.last_name = credentials["last"]
+        s.first_name = credentials["first"]
+        s.pwhash = credentials["password"]
+        s.regtime = Time.now
+        if(s.save)
+          content_type :json
+          { :data => {:result => 'Success'}}.to_json
+        else
+          jsonreturn = { :data => {:result => 'FAIL', :errors => Array.new}}
+          s.errors.each do |e|
+            jsonreturn[:data][:errors] << {:error => e.to_s}
+          end
+          content_type :json
+          if(jsonreturn[:data][:errors].none?)
+            jsonreturn[:data][:errors] << {:error => "Unknown Error"}
+          end
+          pp jsonreturn
+          jsonreturn.to_json
+          
+        end
       elsif (params[:first_name] == "" || params[:last_name] == "" || params[:password] == "" || params[:email] == "") || Student.first(:email => params[:email])
         session[:message] = "Registration Failed"
         if Student.first(:email => params[:email])
