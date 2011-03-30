@@ -20,6 +20,8 @@ module Routes
     app.post '/register/?' do
       if (session[:user])
         redirect '/'
+      elsif(params[:data])
+        
       elsif (params[:first_name] == "" || params[:last_name] == "" || params[:password] == "" || params[:email] == "") || Student.first(:email => params[:email])
         session[:message] = "Registration Failed"
         if Student.first(:email => params[:email])
