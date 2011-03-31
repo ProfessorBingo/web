@@ -24,6 +24,12 @@ class Student
   property :permissions, String, :accessor => :protected, :required => true, :default => 'standard'
   property :regtime,     Time, :required => true
   property :item_enabled,Boolean, :default => false, :required => true
+
+  belongs_to :school, :required => false
+#  before :save, :categorize
+  before :save, :set_school
+  
+  
   
   def password=(pass)
     self.pwhash = Student.encrypt(pass, self.email.to_s)
@@ -112,6 +118,14 @@ class Student
   def url_safe_email
     CGI::escape(self.email)
   end
+
+  def set_school
+    if(self.email)
+      ext = self.email.scan(/^.*@(.*)$/)[0]
+      pp ext
+      self.school = School.first(:emailext => ext)
+    end
+  end
 end
 
 class School
@@ -130,6 +144,8 @@ class School
         :is_unique => "That school name is already taken."
       }
   property :item_enabled,       Boolean, :default => false, :required => true
+  
+  has n, :student
   
   def url_safe_name
     CGI::escape(self.name)

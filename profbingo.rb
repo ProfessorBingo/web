@@ -99,6 +99,12 @@ class ProfBingo < Sinatra::Base
       s.item_enabled = true
       s.save
     end
+    
+    # Create a sample school or 2
+    if(School.first(:emailext => 'rose-hulman.edu'))
+      s = School.create(:name => 'Rose-Hulman', :short => 'RHIT', :emailext => 'rose-hulman.edu')
+    end
+    
     enable :static, :session
     set :root, File.dirname(__FILE__)
 
