@@ -143,6 +143,58 @@ module Routes
         end
       end
     end
+    
+    app.post '/professor/get/?' do 
+      if(params[:data])
+        itemhash = JSON.parse(params[:data])
+        s = Student.first(:mobileauth => itemhash['authcode'])
+        if(s && itemhash['authcode'] != '' && itemhash['authcode'])
+          ps = Array.new
+          Professor.all.each do |prof| 
+            ps << {:id => prof.id, :name => prof.name}
+          end
+          content_type :json
+          { :data => {:result => 'Success', :professors => ps}}.to_json
+        else
+          content_type :json
+          { :data => {:result => 'FAIL'}}.to_json
+        end
+      end
+    end
+    
+    app.post '/category/get/?' do 
+      if(params[:data])
+        itemhash = JSON.parse(params[:data])
+        s = Student.first(:mobileauth => itemhash['authcode'])
+        if(s && itemhash['authcode'] != '' && itemhash['authcode'])
+          cs = Array.new
+          Category.all.each do |cat| 
+            cs << {:id => cat.id, :name => cat.name}
+          end
+          content_type :json
+          { :data => {:result => 'Success', :categories => cs}}.to_json
+        else
+          content_type :json
+          { :data => {:result => 'FAIL'}}.to_json
+        end
+      end
+    end
+    app.get '/professor/get/?' do 
+      ps = Array.new
+      Professor.all.each do |prof| 
+        ps << {:id => prof.id, :name => prof.name}
+      end
+      content_type :json
+      { :data => {:result => 'Success', :professors => ps}}.to_json
+    end
+    app.get '/category/get/?' do 
+      cs = Array.new
+      Category.all.each do |cat| 
+        cs << {:id => cat.id, :name => cat.name}
+      end
+      content_type :json
+      { :data => {:result => 'Success', :categories => cs}}.to_json
+    end
 
 
     ### Control Panel Routes ###
