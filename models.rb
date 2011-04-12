@@ -3,6 +3,11 @@ class Professor
   
   property :id,   Serial
   property :name, String, :required => true
+  
+  belongs_to :school
+  belongs_to :department
+  has n, :mannerism
+  has n, :board
 end
 
 class Category
@@ -10,6 +15,15 @@ class Category
   
   property :id,   Serial
   property :name, String, :required => true
+  has n, :mannerism
+end
+
+class Department
+  include DataMapper::Resource
+  
+  property :id,   Serial
+  property :name, String, :required => true
+  has n, :professor
 end
 
 class Student
@@ -33,6 +47,7 @@ class Student
   property :item_enabled,Boolean, :default => false, :required => true
 
   belongs_to :school, :required => false
+  has n, :board
 #  before :save, :categorize
   before :save, :set_school
   
@@ -153,6 +168,7 @@ class School
   property :item_enabled,       Boolean, :default => false, :required => true
   
   has n, :student
+  has n, :professor
   
   def url_safe_name
     CGI::escape(self.name)
@@ -163,9 +179,17 @@ class Board
   include DataMapper::Resource
   
   property :id,         Serial
+  belongs_to :student
+  belongs_to :professor
+  has n, :mannerism
 end
 
 class Mannerism
   include DataMapper::Resource
+  
   property :id,         Serial
+  property :text, Text
+  belongs_to :professor
+  has n, :category
+  has n, :board
 end
