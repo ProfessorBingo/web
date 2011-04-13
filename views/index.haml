@@ -6,4 +6,4 @@
     %link{:href => "/css/style.css", :media => "screen", :rel => "stylesheet"}
   %body
     =haml :header
-    
+    =haml("#{@page}/#{@action}".to_sym) rescue haml(:home)

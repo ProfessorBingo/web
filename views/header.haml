@@ -12,7 +12,16 @@
       %br
       %a{:title => "Login", :id => "Login", :href => "/login/"} Login
   .clear_both
-    
+  .main_nav
+    %a{:title => "Home", :id => "Home", :href => "/"} Home
+    = " - "
+    %a{:title => "PlayBingo", :id => "PlayBingo", :href => "/play"} Play Bingo
+    = " - "
+    %a{:title => "AddProfessor", :id => "AddProfessor", :href => "/professor/add"} Add Professor
+    = " - "
+    %a{:title => "AddMannerism", :id => "AddMannerism", :href => "/mannerism/add"} Add Mannerism
+    = " - "
+    %a{:title => "ManageAccount", :id => "ManageAccount", :href => "/manage"} Manage Account
   - if session[:message]
     .message
       =session[:message]

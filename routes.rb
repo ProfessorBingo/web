@@ -180,13 +180,11 @@ module Routes
         end
       end
     end
-    app.get '/professor/get/?' do 
-      ps = Array.new
-      Professor.all.each do |prof| 
-        ps << {:id => prof.id, :name => prof.name}
-      end
-      content_type :json
-      { :data => {:result => 'Success', :professors => ps}}.to_json
+    
+    app.get '/professor/add/?' do 
+      @page = :professor
+      @action = :add
+      haml :index
     end
     app.get '/category/get/?' do 
       cs = Array.new
@@ -241,7 +239,6 @@ module Routes
     end
 
     app.get '/controlpanel/school/edit/:school/?' do
-      pp "Using specific school edit GET route"
       if(session[:user] && session[:user].admin?)
         schoolsearch = params[:school].gsub("*", "%")
         search = School.all(:name.like => schoolsearch)
@@ -272,7 +269,6 @@ module Routes
     end
 
     app.get '/controlpanel/?:page?/?:action?/?:item?/?' do
-      pp "Using super awesome generic route!"
       if(session[:user] && session[:user].admin?)
         @page = params[:page]
         @action = params[:action]
