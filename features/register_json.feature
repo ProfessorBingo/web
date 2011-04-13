@@ -8,7 +8,7 @@ Feature: Register via JSON
     When I register as 'user' via JSON
     Then the JSON 'result' I receive should be 'Success'
     
-  Scenario: Register correctly via JSON
+  Scenario: Register incorrectly via JSON
     Given A user 'user' exists
     When I register as 'user' via JSON
     Then the JSON 'result' I receive should be 'FAIL'

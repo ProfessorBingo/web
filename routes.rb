@@ -29,6 +29,7 @@ module Routes
         s.pwhash = credentials["password"]
         s.regtime = Time.now
         if(s.save)
+          send_validation_code(s.email, s.regcode, s.regtime, s.first_name)
           content_type :json
           { :data => {:result => 'Success'}}.to_json
         else
@@ -63,7 +64,7 @@ module Routes
         s.save
         session[:user] = Student.auth(params[:email], params[:password])
         session[:message] = "Registration Successful!"
-        session[:message] += "<a href=\"/validate/#{s.email}/#{s.regcode}/#{s.regtime.to_i}/\">Validate</a>"
+        send_validation_code(s.email, s.regcode, s.regtime, s.first_name)
         haml :index
       end
     end
