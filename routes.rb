@@ -161,8 +161,8 @@ module Routes
           end
           
           ps = Array.new
-          Professor.all.each do |prof| 
-            ps << {:id => prof.id, :name => prof.name, :department => depts}
+          Professor.all(:department => depts).each do |prof| 
+            ps << {:id => prof.id, :name => prof.name}
           end
           content_type :json
           { :data => {:result => 'Success', :professors => ps}}.to_json
