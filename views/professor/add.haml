@@ -12,5 +12,10 @@
       %li
         %label{:for => "dept"} Professor Dept:
         %input{:type => "text", :name => "dept", :value => @dept}
+        = "("
+        - Department.all.each do |dept|
+          = dept.name
+          = ", "
+        = ")"
       %li
         %input{:type => "submit", :value => "Add New Professor"}

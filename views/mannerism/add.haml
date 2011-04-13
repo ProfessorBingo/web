@@ -9,6 +9,11 @@
       %li
         %label{:for => "cat"} Category:
         %input{:type => "text", :name => "cat", :value => @cat}
+        = "("
+        - Category.all.each do |cat|
+          = cat.name
+          = ", "
+        = ")"
       %li
         %label{:for => "desc"} Mannerism Text:
         %input{:type => "text", :name => "desc", :value => @desc}
