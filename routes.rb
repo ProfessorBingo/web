@@ -233,10 +233,9 @@ module Routes
         
         if(prof && cat && exists.nil?)
           Mannerism.create(:text => params['desc'], :professor => prof, :category => cat)
-          pp params['desc']
-          pp prof
-          pp cat
           session[:message] = "Mannerism added to #{prof.name} successfully!"
+          @prof = params['prof']
+          @cat = params['cat']
         else
           @desc = params['desc']
           @prof = params['prof']
