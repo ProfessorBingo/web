@@ -6,8 +6,10 @@ Feature: Edit user
   Scenario: Admin edits all values they can
     Given a user 'user' exists
     And a user 'admin' exists
+    And a user 'superadmin' exists
     And 'user' is a 'standard'
     And 'admin' is an 'admin'
+    And 'superadmin' is an 'superadmin'
     And I am logged in as 'admin'
     And my current url is '/controlpanel/user/edit/user*'
     When I fill in 'Bill' for 'first_name'

@@ -7,12 +7,14 @@
       =haml 'cpanel/user/find'.to_sym
     - else
       %li
-        - if(session[:user].superadmin?)
-          %label{:for => "email"} Email Address:
-          %input{:type => "text", :name => "email", :value => @user.email}
-        - else
-          =@user.email
-          %input{:type => "hidden", :name => "email", :value => @user.email}
+        - # Password hashes depend on username, we can't regen the hash 
+        - # without editing the password. changes here are not allowed
+        - #if(session[:user].superadmin?)
+        %label{:for => "email"} Email Address:
+        - #%input{:type => "text", :name => "email", :value => @user.email}
+        - #else
+        =@user.email
+        %input{:type => "hidden", :name => "email", :value => @user.email}
       %li
         %label{:for => "first_name"} First Name:
         %input{:type => "text", :name => "first_name", :value => @user.first_name}

@@ -6,7 +6,7 @@ gem 'dm-validations'
 gem 'dm-sqlite-adapter'
 gem 'haml'
 gem 'thin'
-gem 'json', '~>1.4.6'
+gem 'json'
 gem 'cucumber', :group => :test
 gem 'capybara', :group => :test
 gem 'rspec', :group => :test

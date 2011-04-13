@@ -121,7 +121,9 @@ Feature: Create administrative and moderator users
   Scenario: Admin makes another user an admin
     Given A user 'admin' exists
     And A user 'user' exists
+    And A user 'superadmin' exists
     And 'admin' is an 'admin'
+    And 'superadmin' is an 'superadmin'
     And I am logged in as 'admin'
     And I am viewing 'Edit User' of 'user'
     And I should not see 'Super Admins have root access'
@@ -133,6 +135,8 @@ Feature: Create administrative and moderator users
   Scenario: Admin makes another user a supermod
     Given A user 'admin' exists
     And A user 'user' exists
+    And A user 'superadmin' exists
+    And 'superadmin' is an 'superadmin'
     And 'admin' is an 'admin'
     And I am logged in as 'admin'
     And I am viewing 'Edit User' of 'user'
@@ -146,6 +150,8 @@ Feature: Create administrative and moderator users
   Scenario: Admin makes another user a mod
     Given A user 'admin' exists
     And A user 'user' exists
+    And A user 'superadmin' exists
+    And 'superadmin' is an 'superadmin'
     And 'admin' is an 'admin'
     And I am logged in as 'admin'
     And I am viewing 'Edit User' of 'user'
@@ -159,7 +165,9 @@ Feature: Create administrative and moderator users
   Scenario: Admin revokes permissions
     Given A user 'admin' exists
     And A user 'user' exists
+    And A user 'superadmin' exists
     And 'admin' is an 'admin'
+    And 'superadmin' is an 'superadmin'
     And I am logged in as 'admin'
     And I am viewing 'Edit User' of 'user'
     And I should not see 'Super Admins have root access'

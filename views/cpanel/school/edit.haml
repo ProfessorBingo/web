@@ -1,6 +1,8 @@
 - pp "Found edit.haml"
 %h3
-  ="Edit School"
+  = "Edit School"
+  - if(@school)
+    = " - #{@school.name}"
 %form{:action => "", :method => "post"}
   %fieldset
     %ul

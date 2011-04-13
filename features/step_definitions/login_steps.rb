@@ -3,6 +3,9 @@ Given /^[Aa] user '(.*)' exists$/ do |user|
     s = Factory.create(user.to_sym)
   end
 end
+Given /^[Aa] user '(.*)' does not exist$/ do |user|
+  !Student.first(:email => user)
+end
 
 Given /^I am logged in as '(.*)'$/ do |user|
     visit("/login")

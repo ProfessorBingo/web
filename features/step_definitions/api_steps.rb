@@ -25,6 +25,15 @@ Given /^I log in as '(.*)' via JSON with null values$/ do |user|
   rack_test_session_wrapper.process :post, '/login' ,:data => json_login
 end
 
+# Must run this one as rack_test!!!
+When /^I register as '(.*)' via JSON$/ do |user|
+  Capybara.current_driver = :rack_test
+  u = Factory.build(user.to_sym)
+  json_register = {'email' => u.email, 'password' => u.pwhash, 'first' => u.first_name, 'last' => u.last_name}.to_json
+  rack_test_session_wrapper = Capybara.current_session.driver
+  rack_test_session_wrapper.process :post, '/register' ,:data => json_register
+end
+
 When /^I send a POST request to "([^\"]*)" with the following:$/ do |path, body|
   post path, body
 end
