@@ -181,7 +181,23 @@ class Board
   property :id,         Serial
   belongs_to :student
   belongs_to :professor
-  has n, :mannerism
+  has n, :board_link
+  has n, :mannerism, :through => :board_link
+  
+  def generate
+    mannerisms = Mannerism.all(:professor => professor)
+    if(self.mannerism.count != 25 && mannerisms.count >= 25)
+       shuffled = mannerisms.shuffle[0..24]
+       pp shuffled
+       pp shuffled.class
+       self.mannerism = shuffled
+       self.save
+      return true
+    else
+      return nil
+    end
+  end
+  
 end
 
 class Mannerism
@@ -190,6 +206,14 @@ class Mannerism
   property :id,         Serial
   property :text, Text
   belongs_to :professor
-  has n, :category
-  has n, :board
+  belongs_to :category
+  has n, :board_link
+  has n, :board, :through => :board_link
+end
+
+class BoardLink
+  include DataMapper::Resource
+  belongs_to :board,   :key => true
+  belongs_to :mannerism, :key => true
+  
 end

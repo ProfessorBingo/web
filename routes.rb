@@ -178,6 +178,88 @@ module Routes
           content_type :json
           { :data => {:result => 'FAIL'}}.to_json
         end
+      else
+        content_type :json
+        { :data => {:result => 'FAIL'}}.to_json
+      end
+    end
+    
+    app.get '/mannerism/add/?' do 
+      if(session[:user])
+        @page = :mannerism
+        @action = :add
+      end
+      haml :index
+    end
+    
+    app.post '/mannerism/add/?' do 
+      if(session[:user])
+        @page = :mannerism
+        @action = :add
+        
+        profsearch = "%"+params['name'].gsub("*", "%")+"%"
+        proflist = Professor.all(:name.like => profsearch)
+        if(proflist.count == 1) 
+          prof = proflist.first
+        else
+          session[:message] = "Professor #{params['name']} not found!"
+          @name = params['name']
+        end
+        
+        catsearch = "%"+params['cat'].gsub("*", "%")+"%"
+        catlist = Category.all(:name.like => catsearch)
+        if(catlist.count == 1) 
+          cat = catlist.first
+        else
+          session[:message] = "Category #{params['cat']} not found!"
+          @cat = params['cat']
+        end
+        
+        # Make sure mannerism is not taken for given professor
+        if(prof && Mannerism.all(:text => params['desc'], :professor => prof).count > 0)
+          exists = true
+        end
+        
+        
+        if(prof && cat && exists.nil?)
+          Mannerism.create(:text => params['desc'], :professor => prof, :category => cat)
+          pp params['desc']
+          pp prof
+          pp cat
+          session[:message] = "Mannerism added to #{prof.name} successfully!"
+        else
+          @desc = params['desc']
+          @prof = params['prof']
+          @cat = params['cat']
+        end        
+        
+      end
+      haml :index
+    end
+    
+    app.post '/play/?' do 
+      if(params[:data])
+        itemhash = JSON.parse(params[:data])
+        s = Student.first(:mobileauth => itemhash['authcode'])
+        p = Professor.first(:id => itemhash['professorid'])
+        if(s && p && itemhash['authcode'] != '' && itemhash['authcode'])
+          b = Board.create(:student => s, :professor => p)
+          b.generate
+          i = 1
+          m_array = Array.new
+          b.mannerism.each do |item| 
+            m_array << {:location => i, :text => item.text, :itemid => item.id}
+            i = i+1
+          end
+          content_type :json
+          { :data => {:result => 'Success', :boardid => b.id, :mannerisms => m_array}}.to_json
+        else
+          content_type :json
+          { :data => {:result => 'FAIL'}}.to_json
+        end
+      else
+        content_type :json
+        { :data => {:result => 'FAIL'}}.to_json
       end
     end
     
@@ -205,9 +287,11 @@ module Routes
         # Check valid deptartment
         deptsearch = "%"+params['dept'].gsub("*", "%")+"%"
         deptlist = Department.all(:name.like => deptsearch)
+        pp deptlist
         if(schoollist.count == 1) 
           dept = deptlist.first
         else
+          pp "Dept not found!"
           session[:message] = "Department #{params['dept']} not found!"
           @dept = params['dept']
         end
@@ -219,6 +303,7 @@ module Routes
         
         
         if(school && dept && exists.nil?)
+          pp "Adding prof"
           Professor.create(:name => params['name'], :school => school, :department => dept)
           session[:message] = "Professor #{params['name']} added successfully!"
         else

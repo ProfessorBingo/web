@@ -1,0 +1,16 @@
+%h3
+  ="Add a new Mannerism"
+%form{:action => "", :method => "post"}
+  %fieldset
+    %ul
+      %li
+        %label{:for => "name"} Professor Name:
+        %input{:type => "text", :name => "name", :value => @name}
+      %li
+        %label{:for => "cat"} Category:
+        %input{:type => "text", :name => "cat", :value => @cat}
+      %li
+        %label{:for => "desc"} Mannerism Text:
+        %input{:type => "text", :name => "desc", :value => @desc}
+      %li
+        %input{:type => "submit", :value => "Add New Mannerism"}
