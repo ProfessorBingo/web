@@ -150,9 +150,19 @@ module Routes
         itemhash = JSON.parse(params[:data])
         s = Student.first(:mobileauth => itemhash['authcode'])
         if(s && itemhash['authcode'] != '' && itemhash['authcode'])
+          if(itemhash['departments'])
+            dept_array = Array.new
+            itemhash['department'].each do |dept|
+              deptarray << dept['deptid'].to_i
+            end
+            depts = Department.all(:id => dept_array)
+          else
+            depts = Department.all
+          end
+          
           ps = Array.new
           Professor.all.each do |prof| 
-            ps << {:id => prof.id, :name => prof.name}
+            ps << {:id => prof.id, :name => prof.name, :department => depts}
           end
           content_type :json
           { :data => {:result => 'Success', :professors => ps}}.to_json
@@ -163,17 +173,17 @@ module Routes
       end
     end
     
-    app.post '/category/get/?' do 
+    app.post '/department/get/?' do 
       if(params[:data])
         itemhash = JSON.parse(params[:data])
         s = Student.first(:mobileauth => itemhash['authcode'])
         if(s && itemhash['authcode'] != '' && itemhash['authcode'])
-          cs = Array.new
-          Category.all.each do |cat| 
-            cs << {:id => cat.id, :name => cat.name}
+          ds = Array.new
+          Department.all.each do |dept| 
+            ds << {:id => dept.id, :name => dept.name}
           end
           content_type :json
-          { :data => {:result => 'Success', :categories => cs}}.to_json
+          { :data => {:result => 'Success', :departments => ds}}.to_json
         else
           content_type :json
           { :data => {:result => 'FAIL'}}.to_json
@@ -314,14 +324,6 @@ module Routes
         
       end
       haml :index
-    end
-    app.get '/category/get/?' do 
-      cs = Array.new
-      Category.all.each do |cat| 
-        cs << {:id => cat.id, :name => cat.name}
-      end
-      content_type :json
-      { :data => {:result => 'Success', :categories => cs}}.to_json
     end
 
 

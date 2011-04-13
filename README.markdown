@@ -118,9 +118,8 @@ __Note:__ This condition will occur if an _authcode_ is __NOT__ valid
         "result": "FAIL"
     }
 
-##Get Categories for School##
-###NOT YET IMPLEMENTED###
-###URL: /category/get###
+##Get Departments for School##
+###URL: /department/get###
 The JSON object should be posted in 'data' as follows:
 
     data => 
@@ -134,11 +133,11 @@ __Success__
 
     {
         "result": "Success", 
-        "categories": 
+        "departments": 
         [
             {
                 "id": "1", 
-                "name": "Science"
+                "name": "CSSE"
             }, 
             {
                 "id": "2", 
@@ -156,17 +155,16 @@ __Note:__ This condition will occur if an _authcode_ is __NOT__ valid
     }
 
 ##Get Professors for School##
-###NOT YET IMPLEMENTED###
 ###URL: /professor/get###
 The JSON object should be posted in 'data' as follows:
 
     data => 
     {
         "authcode": "8bdf9067f19ae9f2614c62676792b1ecf70f47dd"
-        (, "categories": 
+        (, "departments": 
         [
-            {"categoryid": "1"}, 
-            {"categoryid": "2"}
+            {"deptid": "1"}, 
+            {"deptid": "2"}
         ])
     }
 
@@ -201,8 +199,7 @@ __Note:__ This condition will occur if an _authcode_ is __NOT__ valid
 
 
 ##Get Board##
-###NOT YET IMPLEMENTED###
-###URL: /board/get###
+###URL: /play###
 The JSON object should be posted in 'data' as follows:
 
     data => 
@@ -242,7 +239,7 @@ __Success__
                 "location": "25"
                 "text": "The professor throws a marker... and makes it in the trash can"
                 "itemid": "28"
-            },
+            }
         ]
     }
 
