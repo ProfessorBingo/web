@@ -182,8 +182,52 @@ module Routes
     end
     
     app.get '/professor/add/?' do 
-      @page = :professor
-      @action = :add
+      if(session[:user])
+        @page = :professor
+        @action = :add
+      end
+      haml :index
+    end
+    
+    app.post '/professor/add/?' do
+      if(session[:user])
+        @page = :professor
+        @action = :add
+        # Check valid school
+        schoolsearch = "%"+params['school'].gsub("*", "%")+"%"
+        schoollist = School.all(:name.like => schoolsearch)
+        if(schoollist.count == 1) 
+          school = schoollist.first
+        else
+          session[:message] = "School #{params['school']} not found!"
+          @school = params['school']
+        end
+        # Check valid deptartment
+        deptsearch = "%"+params['dept'].gsub("*", "%")+"%"
+        deptlist = Department.all(:name.like => deptsearch)
+        if(schoollist.count == 1) 
+          dept = deptlist.first
+        else
+          session[:message] = "Department #{params['dept']} not found!"
+          @dept = params['dept']
+        end
+        
+        # Make sure name is not taken for given school
+        if(school && Professor.all(:name => params['name'], :school => school).count > 0)
+          exists = true
+        end
+        
+        
+        if(school && dept && exists.nil?)
+          Professor.create(:name => params['name'], :school => school, :department => dept)
+          session[:message] = "Professor #{params['name']} added successfully!"
+        else
+          @name = params['name']
+          @school = params['school']
+          @dept = params['dept']
+        end
+        
+      end
       haml :index
     end
     app.get '/category/get/?' do 
